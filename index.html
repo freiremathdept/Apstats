@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stat Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top" data-anim="julia">
+    <canvas class="bg-anim" aria-hidden="true"></canvas>
+    <div class="scrim" aria-hidden="true"></div>
+    <span class="eyebrow">AP Statistics · Freire Charter</span>
+    <h1>Stat Index</h1>
+    <p>Everything for AP Stats in one place — upcoming quizzes and tests, practice problems by lesson, calculator help, interpretation-sentence practice, and links you'll actually need.</p>
+  </header>
+
+  <nav class="sitenav">
+    <a href="index.html" data-nav>Home</a>
+    <a href="practice.html" data-nav>Practice Problems</a>
+    <a href="calculator.html" data-nav>Calculator Help</a>
+    <a href="interpretation.html" data-nav>Interpretation Practice</a>
+    <a href="links.html" data-nav>Helpful Links</a>
+  </nav>
+
+  <div id="comingUp" class="coming-up" hidden>
+    <h2 class="cu-title">📅 Coming up</h2>
+    <p class="cu-stale" id="cuStale"></p>
+    <div id="cuList"></div>
+  </div>
+
+  <div class="nav-cards">
+    <a class="nav-card" href="practice.html">
+      <span class="nc-icon">🔎</span>
+      <span class="nc-title">Practice Problems</span>
+      <span class="nc-desc">Search by topic, lesson number (like "7.3"), or paste a question. Textbook pages, original practice problems with full solutions, and 10-point FRQ practice for every unit.</span>
+    </a>
+    <a class="nav-card" href="calculator.html">
+      <span class="nc-icon">🧮</span>
+      <span class="nc-title">Calculator Help</span>
+      <span class="nc-desc">TI-84 Plus CE / CE Evo keystroke guides with videos, organized by skill — 1-Var Stats, normalcdf, inference tests, LinReg, and more.</span>
+    </a>
+    <a class="nav-card" href="interpretation.html">
+      <span class="nc-icon">✍️</span>
+      <span class="nc-title">Interpretation Practice</span>
+      <span class="nc-desc">The skill AP graders care about most: writing the interpretation sentence for a confidence interval, test conclusion, slope, r², and more — checked against the exact templates.</span>
+    </a>
+    <a class="nav-card" href="links.html">
+      <span class="nc-icon">🔗</span>
+      <span class="nc-title">Helpful Links</span>
+      <span class="nc-desc">AP Classroom, the CED, the Math Medic portal, a calculator emulator, Desmos, and anything else worth bookmarking.</span>
+    </a>
+  </div>
+
+  <footer class="note">
+    Textbook pages are from <em>The Practice of Statistics for the AP® Course</em>, 8th Edition (Starnes/Tabor, 2025), matched to this year's Math Medic lesson numbers by Mr. Fox. Practice problems are original, written to match each lesson's learning targets — not reproductions of Math Medic or AP Classroom questions. If a page range looks off, tell Mr. Fox so it can get fixed for everyone.
+  </footer>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

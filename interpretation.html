@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Interpretation Practice — Stat Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top" data-anim="band">
+    <canvas class="bg-anim" aria-hidden="true"></canvas>
+    <div class="scrim" aria-hidden="true"></div>
+    <span class="eyebrow">AP Statistics · Freire Charter</span>
+    <h1>✍️ Interpretation Practice</h1>
+    <p>On the AP exam, getting the number right usually isn't enough — you have to write the interpretation sentence correctly too. Each card below gives you a result with no interpretation; write your own sentence, then reveal the model answer (matched to the Math Medic Ultimate Interpretations Guide's exact templates) and see if you nailed it.</p>
+  </header>
+
+  <nav class="sitenav">
+    <a href="index.html" data-nav>Home</a>
+    <a href="practice.html" data-nav>Practice Problems</a>
+    <a href="calculator.html" data-nav>Calculator Help</a>
+    <a href="interpretation.html" data-nav>Interpretation Practice</a>
+    <a href="links.html" data-nav>Helpful Links</a>
+  </nav>
+
+  <div id="interpBrowse"></div>
+
+  <div class="log-bar">
+    <p>Your ✅ / 🤔 marks are saved on this device and (if you enter your name) sent to Mr. Fox so he can see which interpretation types the class is still shaky on.</p>
+    <button id="copyLog">Copy my practice log</button>
+  </div>
+
+  <footer class="note">
+    Sentence templates come from the Math Medic Ultimate Interpretations Guide. These are new original scenarios, not reproductions of Math Medic or AP Classroom questions.
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="name-modal" id="nameModal" hidden>
+  <div class="name-modal-box">
+    <div class="nm-title">Quick — before that's logged</div>
+    <div class="nm-body">What's your name? This lets Mr. Fox see which interpretation types the class is still shaky on. It's saved on this device, so you'll only enter it once.</div>
+    <input id="nameInput" type="text" placeholder="First and last name" maxlength="60" autocomplete="off">
+    <div class="nm-actions">
+      <button id="nameSkip" type="button" class="nm-skip">Skip — just log on my device</button>
+      <button id="nameSave" type="button" class="nm-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
