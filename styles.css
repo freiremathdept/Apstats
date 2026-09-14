@@ -507,3 +507,20 @@
 .ask-panel-note{font-size:.74rem; color:var(--ink-soft); line-height:1.4;}
 .ask-status{font-size:.85rem; font-weight:600; color:var(--success); display:none;}
 .ask-status.show{display:block;}
+.ask-suggest{
+  border-top:1px dashed var(--line); margin-top:2px; padding-top:12px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.ask-suggest .as-lead{font-size:.82rem; font-weight:600; color:var(--ink-soft);}
+.ask-suggest-item{
+  background:var(--bg-subtle); border:1px solid var(--line); border-radius:10px; padding:10px 12px;
+  display:flex; flex-direction:column; gap:3px;
+}
+.ask-suggest-item .asi-lesson{font-size:.88rem; font-weight:700; color:var(--ink);}
+.ask-suggest-item .asi-pages{font-size:.78rem; color:var(--ink-soft);}
+.asi-go{
+  align-self:flex-start; margin-top:4px; border:none; background:var(--accent); color:#fff;
+  font-size:.8rem; font-weight:700; border-radius:7px; padding:6px 12px; cursor:pointer;
+  transition:filter .15s ease;
+}
+.asi-go:hover{filter:brightness(1.1);}

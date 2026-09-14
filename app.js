@@ -52,7 +52,7 @@ function expandQuery(q){
 }
 
 // Precompute search text per lesson (guarded: pages like links.html include app.js
-// for the nav-highlighter + Ask Mr. Fox widget only, without loading data.js's ~800KB dataset)
+// for the nav-highlighter + Ask Mr. Ian widget only, without loading data.js's ~800KB dataset)
 if (LESSON_DATA && LESSON_DATA.lessons) LESSON_DATA.lessons.forEach(l=>{
   const cedText = l.ced.map(c=>c.num+" "+c.title).join(" ");
   l._titleText = norm(l.title);
@@ -570,7 +570,7 @@ function renderComingUp(){
   const updatedDate = new Date(CALENDAR_UPDATED+"T00:00:00");
   const staleDays = Math.round((today-updatedDate)/86400000);
   staleEl.textContent = staleDays>13
-    ? `Pulled from the AP Stat 26-27 calendar on ${CALENDAR_UPDATED} — ask Mr. Fox to refresh if dates look off.`
+    ? `Pulled from the AP Stat 26-27 calendar on ${CALENDAR_UPDATED} — ask Mr. Ian to refresh if dates look off.`
     : `From the AP Stat 26-27 calendar, updated ${CALENDAR_UPDATED}.`;
   listEl.innerHTML = upcoming.map(e=>{
     const lessons = parseAssessmentLessons(e.title);
@@ -643,7 +643,7 @@ if (copyLogBtn) copyLogBtn.addEventListener("click", ()=>{
     lines.push(`Lesson ${k} (${l ? l.title : ''}): ${marks}`);
   });
   const text = lines.join("\n");
-  const finish = ()=> toast("Copied! Paste it into a message to Mr. Fox.");
+  const finish = ()=> toast("Copied! Paste it into a message to Mr. Ian.");
   if (navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(finish).catch(()=>{
       const ta = document.createElement("textarea");
@@ -673,16 +673,45 @@ if (copyLogBtn) copyLogBtn.addEventListener("click", ()=>{
   }
 })();
 
-// ---------- "Ask Mr. Fox" chat launcher (every page) ----------
+// ---------- "Ask Mr. Ian" chat launcher (every page) ----------
 // Reuses the existing Stat Index Practice Check-ins Google Form/Sheet — no new backend needed.
 // A question is submitted with Lesson="💬 Question" (a marker that can't collide with a real
-// lesson number, so it's easy to spot/filter in the raw "Form Responses 1" tab) and Result set
-// to the page it was asked from. It doesn't touch the Summary tab's per-lesson COUNTIFS math.
+// lesson number, so it's easy to spot/filter in the raw "Form Responses 1" tab). The Result field
+// carries "Asked from: <page> | Suggested: <lesson(s)>" so a Google Apps Script trigger on that
+// Sheet (onFormSubmit) can email Mr. Ian the question + the same lesson suggestion — see the
+// separate Apps Script setup, not part of this file. Doesn't touch the Summary tab's COUNTIFS math.
+//
+// IMPORTANT (by design): this widget never answers the question itself. It only analyzes the
+// text against LESSON_DATA (the same matching engine as the Practice Problems search box) and
+// points the student to a lesson number + textbook pages to check — the email to Mr. Ian carries
+// the same pointer so he can see at a glance what was suggested.
 (function(){
+  const SUGGEST_THRESHOLD = 10; // minimum search() score to surface a lesson suggestion (calibrated
+  // against real question phrasing — a single solid keyword-in-title hit scores ~6-14; below 10
+  // tends to be noise or a wrong guess, so silence (no suggestion) is safer than a bad pointer)
+
+  function suggestLessons(question){
+    if (!(LESSON_DATA && LESSON_DATA.lessons)) return []; // e.g. links.html doesn't load data.js
+    try{
+      return search(question).filter(m=>m.s >= SUGGEST_THRESHOLD).slice(0,2).map(m=>m.l);
+    }catch(e){ return []; }
+  }
+
+  function suggestionRowHTML(l){
+    const pageLine = l.pages
+      ? `TPS8e p. ${l.pages}${l.section ? " (Section " + l.section + ")" : ""}`
+      : "See the Math Medic lesson notes";
+    return `<div class="ask-suggest-item">
+      <div class="asi-lesson">Lesson ${l.lesson} — ${l.title.replace(/</g,"&lt;")}</div>
+      <div class="asi-pages">${pageLine}</div>
+      <button type="button" class="asi-go" data-lesson="${l.lesson}">Go to Lesson ${l.lesson} →</button>
+    </div>`;
+  }
+
   const fab = document.createElement("button");
   fab.className = "ask-fab";
   fab.type = "button";
-  fab.setAttribute("aria-label", "Ask Mr. Fox a question");
+  fab.setAttribute("aria-label", "Ask Mr. Ian a question");
   fab.textContent = "💬";
 
   const panel = document.createElement("div");
@@ -693,8 +722,8 @@ if (copyLogBtn) copyLogBtn.addEventListener("click", ()=>{
   panel.innerHTML = `
     <div class="ask-panel-head">
       <div>
-        <div class="aph-title">Ask Mr. Fox a question</div>
-        <div class="aph-sub">Goes straight to him — he'll follow up in class or by email.</div>
+        <div class="aph-title">Ask Mr. Ian a question</div>
+        <div class="aph-sub">Emails Mr. Ian directly. He'll follow up — and right away you'll get pointed to a lesson and textbook pages to check first (not the answer itself).</div>
       </div>
       <button type="button" class="ask-panel-close" aria-label="Close">✕</button>
     </div>
@@ -704,8 +733,9 @@ if (copyLogBtn) copyLogBtn.addEventListener("click", ()=>{
       <label for="askText">Your question</label>
       <textarea id="askText" maxlength="800" placeholder="e.g. “Can you go over conditions for a chi-square test again?”"></textarea>
       <button type="button" class="ask-send">Send question</button>
-      <div class="ask-status" id="askStatus">Sent! Thanks — Mr. Fox will follow up.</div>
-      <div class="ask-panel-note">Not for anything urgent — for anything time-sensitive, talk to Mr. Fox in class.</div>
+      <div class="ask-status" id="askStatus">Sent to Mr. Ian — he'll follow up.</div>
+      <div class="ask-suggest" id="askSuggest" hidden></div>
+      <div class="ask-panel-note">Not for anything urgent — for anything time-sensitive, talk to Mr. Ian in class.</div>
     </div>`;
 
   function mount(){
@@ -718,6 +748,13 @@ if (copyLogBtn) copyLogBtn.addEventListener("click", ()=>{
     mount(); // script tag is at end of body, so this is the common case
   }
 
+  function resetResponse(){
+    const statusEl = panel.querySelector("#askStatus");
+    const suggestEl = panel.querySelector("#askSuggest");
+    statusEl.classList.remove("show");
+    suggestEl.hidden = true;
+    suggestEl.innerHTML = "";
+  }
   function openPanel(){
     panel.hidden = false;
     fab.classList.add("is-open");
@@ -736,26 +773,51 @@ if (copyLogBtn) copyLogBtn.addEventListener("click", ()=>{
     const nameEl = panel.querySelector("#askName");
     const textEl = panel.querySelector("#askText");
     const statusEl = panel.querySelector("#askStatus");
+    const suggestEl = panel.querySelector("#askSuggest");
     const sendBtn = panel.querySelector(".ask-send");
     const question = textEl.value.trim();
     if (!question){ textEl.focus(); return; }
     const name = nameEl.value.trim().slice(0,60) || "Anonymous";
     try { localStorage.setItem("statIndexStudentName", nameEl.value.trim().slice(0,60)); } catch(e){}
+    resetResponse();
     sendBtn.disabled = true;
     sendBtn.textContent = "Sending…";
+
+    const matches = suggestLessons(question);
+    const page = window.location.pathname.split("/").pop() || "index.html";
+    const suggestionSummary = matches.length
+      ? matches.map(l=>`Lesson ${l.lesson} (${l.title})`).join("; ")
+      : "No confident lesson match — needs your review";
+
     try{
       const body = new URLSearchParams();
       body.append(FORM_FIELDS.name, name);
       body.append(FORM_FIELDS.lesson, "💬 Question");
       body.append(FORM_FIELDS.problem, question.slice(0,800));
-      body.append(FORM_FIELDS.result, "Asked from: " + (window.location.pathname.split("/").pop() || "index.html"));
+      body.append(FORM_FIELDS.result, "Asked from: " + page + " | Suggested: " + suggestionSummary);
       fetch(FORM_ACTION_URL, {method:"POST", mode:"no-cors", body}).catch(()=>{});
     }catch(e){}
-    statusEl.classList.add("show");
+
     sendBtn.textContent = "Send question";
     sendBtn.disabled = false;
     textEl.value = "";
-    setTimeout(()=>{ statusEl.classList.remove("show"); closePanel(); }, 2200);
+    statusEl.classList.add("show");
+
+    if (matches.length){
+      suggestEl.innerHTML = `<div class="as-lead">While you wait, this looks related to:</div>`
+        + matches.map(suggestionRowHTML).join("");
+    } else {
+      suggestEl.innerHTML = `<div class="as-lead">While you wait, try browsing by unit or searching a keyword on Practice Problems.</div>
+        <button type="button" class="asi-go" data-goto-practice="1">Go to Practice Problems →</button>`;
+    }
+    suggestEl.hidden = false;
+    suggestEl.querySelectorAll(".asi-go").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        if (btn.dataset.gotoPractice){ window.location.href = "practice.html"; return; }
+        jumpToLesson(btn.dataset.lesson);
+      });
+    });
+    // No auto-close: the suggestion has something to read/click, so let the student close it themselves.
   });
 })();
 
