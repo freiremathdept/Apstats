@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculator Help — Stat Index</title>
+<title>Describing Distributions — Stat Index</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
@@ -11,12 +11,12 @@
 </head>
 <body>
 <div class="wrap">
-  <header class="top" data-anim="symbols">
-    <div class="symbol-layer" aria-hidden="true"></div>
+  <header class="top" data-anim="histogram">
+    <canvas class="bg-anim" aria-hidden="true"></canvas>
     <div class="scrim" aria-hidden="true"></div>
     <span class="eyebrow">AP Statistics · Freire Charter</span>
-    <h1>🧮 Calculator Help</h1>
-    <p>TI-84 Plus CE / CE Evo — step-by-step guides for the calculator skills you'll actually need for AP Stats, with a short video plus practice problems for each one and the exact menu keystrokes worked into every solution.</p>
+    <h1>📊 Describing Distributions</h1>
+    <p>Practice the SOCV + context skill (Shape, Outliers, Center, Variability) — first from Lesson 1.4, then comparing two distributions from Lesson 1.6. Look at the graph (or the numbers), write your own description, then reveal a model answer.</p>
   </header>
 
   <nav class="sitenav">
@@ -29,19 +29,21 @@
     <a href="links.html" data-nav>Helpful Links</a>
   </nav>
 
-  <div class="browse-toggle" id="calcSection">
-    <h2 style="font-size:1.05rem;margin:0;">All calculator topics</h2>
-    <button id="calcExpandAll">Expand all</button>
-  </div>
-  <div id="calcBrowse"></div>
+  <h2 class="dist-section-heading">Describing one distribution</h2>
+  <p class="dist-section-sub">Lesson 1.4 · AP Skill 4.A — shape, outliers, center, and variability, all in context.</p>
+  <div id="distSingle"></div>
+
+  <h2 class="dist-section-heading">Comparing distributions</h2>
+  <p class="dist-section-sub">Lesson 1.6 · AP Skill 4.A — the same four things, but with explicit comparative language ("greater than," "similar to," etc.).</p>
+  <div id="distComparison"></div>
 
   <div class="log-bar">
-    <p>Your ✅ / 🤔 marks are saved on this device and (if you enter your name) sent to Mr. Ian so he can see which skills the class is still shaky on.</p>
+    <p>Your ✅ / 🤔 marks are saved on this device and (if you enter your name) sent to Mr. Ian so he can see which of these the class is still shaky on.</p>
     <button id="copyLog">Copy my practice log</button>
   </div>
 
   <footer class="note">
-    Keystrokes are written for the TI-84 Plus CE and CE Evo (same menus on both). If your calculator looks different, ask Mr. Ian.
+    Model answers follow the same shape → center → variability → outliers structure (all stated in context) as Mr. Ian's own Math Medic homework answer keys. These are original scenarios, not reproductions of Math Medic or AP Classroom questions.
   </footer>
 </div>
 
@@ -50,7 +52,7 @@
 <div class="name-modal" id="nameModal" hidden>
   <div class="name-modal-box">
     <div class="nm-title">Quick — before that's logged</div>
-    <div class="nm-body">What's your name? This lets Mr. Ian see which skills the class is still shaky on. It's saved on this device, so you'll only enter it once.</div>
+    <div class="nm-body">What's your name? This lets Mr. Ian see which of these the class is still shaky on. It's saved on this device, so you'll only enter it once.</div>
     <input id="nameInput" type="text" placeholder="First and last name" maxlength="60" autocomplete="off">
     <div class="nm-actions">
       <button id="nameSkip" type="button" class="nm-skip">Skip — just log on my device</button>

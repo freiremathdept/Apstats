@@ -474,6 +474,299 @@ if (vocabExpandAllBtn) vocabExpandAllBtn.addEventListener("click", (e)=>{
   e.target.textContent = anyClosed ? "Collapse all" : "Expand all";
 });
 
+// ---------- describing distributions (SOCV + context) ----------
+// Stats helpers mirror the textbook's quartile method exactly (median-of-halves, excluding
+// the overall median from both halves when n is odd) — same method verified against Ian's
+// own Math Medic HW answer keys before any of this data was written.
+function distMedian(vals){
+  const a = vals.slice().sort((x,y)=>x-y);
+  const n = a.length, mid = Math.floor(n/2);
+  return n%2===0 ? (a[mid-1]+a[mid])/2 : a[mid];
+}
+function distQuartiles(vals){
+  const a = vals.slice().sort((x,y)=>x-y);
+  const n = a.length, mid = Math.floor(n/2);
+  const lower = a.slice(0,mid);
+  const upper = n%2===0 ? a.slice(mid) : a.slice(mid+1);
+  return [distMedian(lower), distMedian(upper)];
+}
+function distSummary(vals){
+  const a = vals.slice().sort((x,y)=>x-y);
+  const n = a.length;
+  const min = a[0], max = a[n-1];
+  const median = distMedian(a);
+  const [q1,q3] = distQuartiles(a);
+  const iqr = q3-q1;
+  const loCut = q1-1.5*iqr, hiCut = q3+1.5*iqr;
+  const outliers = a.filter(v=>v<loCut||v>hiCut);
+  const nonOutliers = a.filter(v=>v>=loCut&&v<=hiCut);
+  return {
+    min, max, median, q1, q3, iqr, outliers,
+    whiskerLo: nonOutliers.length ? Math.min(...nonOutliers) : min,
+    whiskerHi: nonOutliers.length ? Math.max(...nonOutliers) : max,
+  };
+}
+function fmtNum(v){
+  const r = Math.round(v*100)/100;
+  return String(r);
+}
+function niceTicks(min, max, count){
+  const range = (max-min) || 1;
+  const rawStep = range/count;
+  const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const norm = rawStep/mag;
+  let step;
+  if (norm<1.5) step = 1*mag; else if (norm<3) step = 2*mag; else if (norm<7) step = 5*mag; else step = 10*mag;
+  const niceMin = Math.floor(min/step)*step;
+  const niceMax = Math.ceil(max/step)*step;
+  const ticks = [];
+  for (let v=niceMin; v<=niceMax+1e-9; v+=step) ticks.push(Math.round(v*1000)/1000);
+  return {min: niceMin, max: niceMax, step, ticks};
+}
+function distColors(){
+  const cs = getComputedStyle(document.documentElement);
+  const g = (name, fallback) => (cs.getPropertyValue(name)||"").trim() || fallback;
+  return {
+    ink: g("--ink","#0f172a"), inkSoft: g("--ink-soft","#64748b"), line: g("--line","#e5e7eb"),
+    accent: g("--accent","#002664"), accent2: g("--accent2","#41b6e6"), accentTint: g("--accent-tint","#e7ebf2"),
+  };
+}
+function setupDistCanvas(canvas){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const cssW = canvas.clientWidth, cssH = canvas.clientHeight;
+  if (!cssW || !cssH) return null;
+  canvas.width = Math.round(cssW*dpr);
+  canvas.height = Math.round(cssH*dpr);
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx, W: cssW, H: cssH};
+}
+function drawDistAxis(ctx, x, axisY, nice, unit, W, marginL, marginR){
+  const col = distColors();
+  ctx.strokeStyle = col.line; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(marginL, axisY); ctx.lineTo(W-marginR, axisY); ctx.stroke();
+  ctx.font = "10.5px 'IBM Plex Mono', monospace"; ctx.textAlign = "center"; ctx.textBaseline = "top";
+  nice.ticks.forEach(t=>{
+    if (t < nice.min-1e-9 || t > nice.max+1e-9) return;
+    const tx = x(t);
+    ctx.strokeStyle = col.line;
+    ctx.beginPath(); ctx.moveTo(tx,axisY); ctx.lineTo(tx,axisY+5); ctx.stroke();
+    ctx.fillStyle = col.inkSoft;
+    ctx.fillText(fmtNum(t), tx, axisY+8);
+  });
+  ctx.font = "11px 'Source Sans 3', sans-serif"; ctx.textAlign = "center";
+  ctx.fillStyle = col.inkSoft;
+  ctx.fillText(unit, (marginL+W-marginR)/2, axisY+22);
+}
+function drawOneBoxplotRow(ctx, x, midY, halfH, s, col){
+  ctx.strokeStyle = col.accent; ctx.lineWidth = 1.8;
+  ctx.beginPath(); ctx.moveTo(x(s.whiskerLo), midY); ctx.lineTo(x(s.q1), midY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x(s.q3), midY); ctx.lineTo(x(s.whiskerHi), midY); ctx.stroke();
+  [s.whiskerLo, s.whiskerHi].forEach(v=>{
+    ctx.beginPath(); ctx.moveTo(x(v), midY-halfH*0.4); ctx.lineTo(x(v), midY+halfH*0.4); ctx.stroke();
+  });
+  const bx0 = x(s.q1), bx1 = x(s.q3);
+  ctx.fillStyle = col.accentTint;
+  ctx.fillRect(bx0, midY-halfH, bx1-bx0, halfH*2);
+  ctx.strokeRect(bx0, midY-halfH, bx1-bx0, halfH*2);
+  ctx.beginPath(); ctx.moveTo(x(s.median), midY-halfH); ctx.lineTo(x(s.median), midY+halfH); ctx.stroke();
+  ctx.fillStyle = col.accent2;
+  s.outliers.forEach(v=>{
+    ctx.beginPath(); ctx.arc(x(v), midY, 4, 0, Math.PI*2); ctx.fill();
+  });
+}
+function stackDots(ctx, x, data, baselineY, nice, color){
+  const tol = Math.max((nice.max-nice.min)/300, 1e-9);
+  const sorted = data.slice().sort((a,b)=>a-b);
+  const groups = [];
+  sorted.forEach(v=>{
+    let g = groups.find(g=>Math.abs(g.v-v)<=tol);
+    if (!g){ g = {v, count:0}; groups.push(g); }
+    g.count++;
+  });
+  ctx.fillStyle = color;
+  const r = 4.5, gap = 1.5;
+  groups.forEach(g=>{
+    const cx = x(g.v);
+    for (let i=0;i<g.count;i++){
+      const cy = baselineY - 6 - i*(2*r+gap) - r;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+    }
+  });
+}
+function drawDotplot(canvas, data, unit){
+  const setup = setupDistCanvas(canvas); if (!setup) return;
+  const {ctx,W,H} = setup; const col = distColors();
+  ctx.clearRect(0,0,W,H);
+  const marginL=34, marginR=18, axisY=H-34;
+  const nice = niceTicks(Math.min(...data), Math.max(...data), 5);
+  const x = v => marginL + (v-nice.min)/(nice.max-nice.min) * (W-marginL-marginR);
+  drawDistAxis(ctx, x, axisY, nice, unit, W, marginL, marginR);
+  stackDots(ctx, x, data, axisY, nice, col.accent);
+}
+function drawHistogram(canvas, data, unit, binWidth){
+  const setup = setupDistCanvas(canvas); if (!setup) return;
+  const {ctx,W,H} = setup; const col = distColors();
+  ctx.clearRect(0,0,W,H);
+  const marginL=34, marginR=18, marginT=14, axisY=H-34;
+  const min=Math.min(...data), max=Math.max(...data);
+  const bw = binWidth || Math.max(1, Math.ceil((max-min)/8));
+  const startBin = Math.floor(min/bw)*bw, endBin = Math.ceil(max/bw)*bw;
+  const bins = [];
+  for (let b=startBin; b<endBin; b+=bw) bins.push({lo:b, hi:b+bw, count:0});
+  data.forEach(v=>{
+    let idx = Math.floor((v-startBin)/bw);
+    if (idx>=bins.length) idx = bins.length-1;
+    if (idx<0) idx = 0;
+    bins[idx].count++;
+  });
+  const maxCount = Math.max(...bins.map(b=>b.count), 1);
+  const plotH = axisY-marginT;
+  const nice = niceTicks(startBin, endBin, 6);
+  const x = v => marginL + (v-startBin)/(endBin-startBin) * (W-marginL-marginR);
+  drawDistAxis(ctx, x, axisY, {min:startBin, max:endBin, ticks:nice.ticks}, unit, W, marginL, marginR);
+  ctx.fillStyle = col.accent;
+  bins.forEach(b=>{
+    if (!b.count) return;
+    const bx0=x(b.lo), bx1=x(b.hi);
+    const bh = (b.count/maxCount) * (plotH-8);
+    ctx.fillRect(bx0+1, axisY-bh, Math.max(bx1-bx0-2,1), bh);
+  });
+}
+function drawBoxplot(canvas, data, unit){
+  const setup = setupDistCanvas(canvas); if (!setup) return;
+  const {ctx,W,H} = setup; const col = distColors();
+  ctx.clearRect(0,0,W,H);
+  const s = distSummary(data);
+  const marginL=34, marginR=18, axisY=H-34, midY=(H-34)/2+2;
+  const nice = niceTicks(s.min, s.max, 5);
+  const x = v => marginL + (v-nice.min)/(nice.max-nice.min) * (W-marginL-marginR);
+  drawDistAxis(ctx, x, axisY, nice, unit, W, marginL, marginR);
+  drawOneBoxplotRow(ctx, x, midY, 24, s, col);
+}
+function drawParallelBoxplot(canvas, dataA, dataB, labelA, labelB, unit){
+  const setup = setupDistCanvas(canvas); if (!setup) return;
+  const {ctx,W,H} = setup; const col = distColors();
+  ctx.clearRect(0,0,W,H);
+  const sA = distSummary(dataA), sB = distSummary(dataB);
+  const marginL=34, marginR=18, axisY=H-34;
+  const rowAY = 58, rowBY = axisY-52;
+  const nice = niceTicks(Math.min(sA.min,sB.min), Math.max(sA.max,sB.max), 5);
+  const x = v => marginL + (v-nice.min)/(nice.max-nice.min) * (W-marginL-marginR);
+  drawDistAxis(ctx, x, axisY, nice, unit, W, marginL, marginR);
+  ctx.textAlign="left"; ctx.font="11px 'Source Sans 3', sans-serif"; ctx.fillStyle=col.ink; ctx.textBaseline="alphabetic";
+  ctx.fillText(labelA, marginL, rowAY-26);
+  ctx.fillText(labelB, marginL, rowBY-26);
+  drawOneBoxplotRow(ctx, x, rowAY, 16, sA, col);
+  drawOneBoxplotRow(ctx, x, rowBY, 16, sB, col);
+}
+function drawParallelDotplot(canvas, dataA, dataB, labelA, labelB, unit){
+  const setup = setupDistCanvas(canvas); if (!setup) return;
+  const {ctx,W,H} = setup; const col = distColors();
+  ctx.clearRect(0,0,W,H);
+  const marginL=34, marginR=18, axisY=H-34;
+  const nice = niceTicks(Math.min(...dataA,...dataB), Math.max(...dataA,...dataB), 5);
+  const x = v => marginL + (v-nice.min)/(nice.max-nice.min) * (W-marginL-marginR);
+  drawDistAxis(ctx, x, axisY, nice, unit, W, marginL, marginR);
+  const rowAY = 78, rowBY = axisY;
+  ctx.textAlign="left"; ctx.font="11px 'Source Sans 3', sans-serif"; ctx.textBaseline="alphabetic";
+  ctx.fillStyle = col.accent; ctx.fillText(labelA, marginL, 12);
+  ctx.fillStyle = col.accent2; ctx.fillText(labelB, marginL, rowAY+14);
+  ctx.strokeStyle = col.line; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(marginL, rowAY+8); ctx.lineTo(W-marginR, rowAY+8); ctx.stroke();
+  ctx.setLineDash([]);
+  stackDots(ctx, x, dataA, rowAY, nice, col.accent);
+  stackDots(ctx, x, dataB, rowBY, nice, col.accent2);
+}
+function drawOneDistCanvas(canvas){
+  const id = canvas.dataset.distId, kind = canvas.dataset.distKind;
+  if (!window.DIST_DATA) return;
+  const list = kind==="single" ? (window.DIST_DATA.single||[]) : (window.DIST_DATA.comparison||[]);
+  const item = list.find(x=>x.id===id);
+  if (!item) return;
+  if (item.graphType==="dotplot") drawDotplot(canvas, item.data, item.unit);
+  else if (item.graphType==="histogram") drawHistogram(canvas, item.data, item.unit, item.binWidth);
+  else if (item.graphType==="boxplot") drawBoxplot(canvas, item.data, item.unit);
+  else if (item.graphType==="parallel-boxplot") drawParallelBoxplot(canvas, item.dataA, item.dataB, item.contextA, item.contextB, item.unit);
+  else if (item.graphType==="parallel-dotplot") drawParallelDotplot(canvas, item.dataA, item.dataB, item.contextA, item.contextB, item.unit);
+}
+function renderDistGraphics(root){
+  root.querySelectorAll("canvas.dist-canvas").forEach(drawOneDistCanvas);
+}
+let distResizeTimer;
+window.addEventListener("resize", ()=>{
+  clearTimeout(distResizeTimer);
+  distResizeTimer = setTimeout(()=>{
+    document.querySelectorAll("canvas.dist-canvas").forEach(drawOneDistCanvas);
+  }, 120);
+});
+
+function fiveNumHTML(fn, unit, label){
+  return `<div class="dist-fivenum">
+    ${label ? `<div class="dfn-label">${label.replace(/</g,"&lt;")}</div>` : ""}
+    <div class="dfn-row"><span>Min</span><b>${fmtNum(fn.min)}</b></div>
+    <div class="dfn-row"><span>Q1</span><b>${fmtNum(fn.q1)}</b></div>
+    <div class="dfn-row"><span>Median</span><b>${fmtNum(fn.median)}</b></div>
+    <div class="dfn-row"><span>Q3</span><b>${fmtNum(fn.q3)}</b></div>
+    <div class="dfn-row"><span>Max</span><b>${fmtNum(fn.max)}</b></div>
+    <div class="dfn-unit">(${unit.replace(/</g,"&lt;")})</div>
+  </div>`;
+}
+function rawListHTML(data, unit){
+  return `<div class="dist-list">${data.join(", ")} <span class="dist-list-unit">(${unit.replace(/</g,"&lt;")})</span></div>`;
+}
+function distGraphicHTML(item, kind){
+  if (kind==="single"){
+    if (item.graphType==="text") return fiveNumHTML(item.fiveNum, item.unit);
+    if (item.graphType==="list") return rawListHTML(item.data, item.unit);
+    return `<div class="dist-graphic"><canvas class="dist-canvas single" data-dist-id="${item.id}" data-dist-kind="single"></canvas></div>`;
+  }
+  if (item.graphType==="text"){
+    return `<div class="dist-fivenum-pair">
+      ${fiveNumHTML(item.fiveNumA, item.unit, item.contextA)}
+      ${fiveNumHTML(item.fiveNumB, item.unit, item.contextB)}
+    </div>`;
+  }
+  const heightClass = item.graphType==="parallel-dotplot" ? "parallel-dot" : "parallel-box";
+  return `<div class="dist-graphic"><canvas class="dist-canvas ${heightClass}" data-dist-id="${item.id}" data-dist-kind="comparison"></canvas></div>`;
+}
+function distCardHTML(item, kind){
+  const log = getLog();
+  const key = `dist:${item.id}`;
+  const saved = (log[key]||{})[0];
+  const askLine = kind==="single"
+    ? "Describe this distribution using shape, outliers, center, and variability (SOCV) — in context."
+    : "Compare these distributions using shape, outliers, center, and variability (SOCV) — in context.";
+  return `<div class="problem dist-card" data-lesson="${key}" data-idx="0">
+    <div class="vc-meta">Lesson ${item.lesson}${kind==="comparison" ? " · Comparing distributions" : " · Describing a distribution"}</div>
+    <div class="ic-title">${item.title.replace(/</g,"&lt;")}</div>
+    <div class="p-prompt">${item.context.replace(/</g,"&lt;")}</div>
+    ${distGraphicHTML(item, kind)}
+    <div class="p-prompt" style="font-weight:600;margin-top:10px;">${askLine}</div>
+    <textarea placeholder="Type your SOCV + context description here… (this isn't saved or checked automatically — it's just to make you commit to an answer before revealing the model one)" rows="4"></textarea>
+    <button class="reveal-btn" type="button">Reveal model answer</button>
+    <div class="answer-box" hidden>
+      <div class="ans">${item.model.replace(/</g,"&lt;")}</div>
+      ${item.note ? `<div class="sol">${item.note.replace(/</g,"&lt;")}</div>` : ""}
+      <div class="self-check">
+        <button class="got ${saved==='got'?'active':''}" type="button" data-val="got">✅ Got it</button>
+        <button class="shaky ${saved==='shaky'?'active':''}" type="button" data-val="shaky">🤔 Still shaky</button>
+      </div>
+    </div>
+  </div>`;
+}
+function buildDistSection(containerId, kind){
+  const el = document.getElementById(containerId);
+  if (!el) return; // this page has no Describing Distributions section
+  const items = kind==="single" ? (window.DIST_DATA && window.DIST_DATA.single || []) : (window.DIST_DATA && window.DIST_DATA.comparison || []);
+  if (!items.length) return;
+  el.innerHTML = items.map(it=>distCardHTML(it, kind)).join("");
+  attachCardHandlers(el);
+  renderDistGraphics(el);
+}
+buildDistSection("distSingle", "single");
+buildDistSection("distComparison", "comparison");
+
 function jumpToLesson(lessonNum){
   if (!resultsEl || !qInput){
     // not on practice.html (e.g. clicked from Home's Coming Up panel, or a Calculator Help lesson chip) — hand off

@@ -471,6 +471,32 @@
 .vocab-list .vocab-lesson-heading:first-child{margin-top:6px; padding-top:0; border-top:none;}
 .vocab-count{font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.72rem; color:var(--ink-soft); font-weight:500; margin-left:6px;}
 
+/* ---------- describing distributions (reuses .problem for the card shell) ---------- */
+.problem.dist-card .ic-title{margin-top:2px;}
+.dist-graphic{margin:14px 0; border:1px solid var(--line); border-radius:10px; background:var(--bg-subtle); padding:4px;}
+.dist-canvas{display:block; width:100%;}
+.dist-canvas.single{height:170px;}
+.dist-canvas.parallel-box{height:190px;}
+.dist-canvas.parallel-dot{height:210px;}
+.dist-fivenum, .dist-fivenum-pair{margin:14px 0;}
+.dist-fivenum-pair{display:flex; gap:12px; flex-wrap:wrap;}
+.dist-fivenum-pair .dist-fivenum{flex:1; min-width:180px;}
+.dist-fivenum{
+  border:1px solid var(--line); border-radius:10px; background:var(--bg-subtle); padding:12px 14px;
+}
+.dfn-label{font-size:.76rem; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:var(--accent-deep); margin-bottom:6px;}
+.dfn-row{display:flex; justify-content:space-between; font-size:.9rem; padding:2px 0;}
+.dfn-row span{color:var(--ink-soft);}
+.dfn-row b{font-family:"IBM Plex Mono", ui-monospace, monospace; font-weight:600;}
+.dfn-unit{font-size:.76rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+.dist-list{
+  margin:14px 0; border:1px solid var(--line); border-radius:10px; background:var(--bg-subtle); padding:12px 14px;
+  font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.92rem; line-height:1.6;
+}
+.dist-list-unit{font-family:"Source Sans 3", sans-serif; color:var(--ink-soft); font-size:.82rem;}
+.dist-section-heading{font-size:1.1rem; margin:32px 0 6px;}
+.dist-section-sub{font-size:.88rem; color:var(--ink-soft); margin:0 0 16px;}
+
 /* ---------- "Ask Mr. Fox" chat launcher (bottom-corner, Stripe-style) ---------- */
 .ask-fab{
   position:fixed; right:22px; bottom:22px; z-index:40;
