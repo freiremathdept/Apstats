@@ -1,6 +1,5 @@
 
 const LESSON_DATA = window.LESSON_DATA;
-const MM_PORTAL = "https://portal.mathmedic.com/lesson-plans/course/AP-Statistics";
 
 // ---------- teacher dashboard (Google Form) ----------
 const FORM_ACTION_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfhUo_f1p32w39mZb9L51twf0ihz1dy-zEtX8DYfZyspxaXjQ/formResponse";
@@ -165,14 +164,12 @@ function readingBoxHTML(l){
     return `<div class="reading-box missing">
       <div class="pages">Not mapped yet</div>
       <div class="note">${l.note ? l.note.replace(/</g,"&lt;") : "No dedicated textbook pages for this lesson."}</div>
-      <div class="mm-link">Read the Math Medic lesson notes instead: <a href="${MM_PORTAL}" target="_blank" rel="noopener">Lesson ${l.lesson} on the Math Medic portal ↗</a></div>
     </div>`;
   }
   return `<div class="reading-box">
-    <div class="pages">TPS8e p. ${l.pages}</div>
+    <div class="pages">TPS8e p. ${l.pages} — read it on BFW Achieve</div>
     <div class="section-name">Section ${l.section}${l.book ? " · "+l.book : ""}</div>
     ${l.note ? `<div class="note">${l.note.replace(/</g,"&lt;")}</div>` : ""}
-    <div class="mm-link">Or review the activity itself: <a href="${MM_PORTAL}" target="_blank" rel="noopener">Lesson ${l.lesson} on the Math Medic portal ↗</a></div>
   </div>`;
 }
 
@@ -356,6 +353,101 @@ function buildInterpBrowse(){
   attachCardHandlers(el);
 }
 buildInterpBrowse();
+
+// ---------- vocabulary flashcards ----------
+// Same shell/self-check/logging pipeline as everything else (see problemHTML + attachCardHandlers),
+// keyed "vocab:<term-id>" (same convention as "calc:<topic-id>" and "interp:<id>").
+function vocabCardHTML(item){
+  const log = getLog();
+  const key = `vocab:${item.id}`;
+  const saved = (log[key]||{})[0];
+  return `<div class="problem vocab-card" data-lesson="${key}" data-idx="0">
+    <div class="vc-meta">Lesson ${item.lesson} · Unit ${item.unit} · ${item.unitTitle}</div>
+    <div class="vc-term">${item.term.replace(/</g,"&lt;")}</div>
+    <button class="reveal-btn" type="button">Reveal definition</button>
+    <div class="answer-box" hidden>
+      <div class="ans">${item.definition.replace(/</g,"&lt;")}</div>
+      <div class="self-check">
+        <button class="got ${saved==='got'?'active':''}" type="button" data-val="got">✅ Got it</button>
+        <button class="shaky ${saved==='shaky'?'active':''}" type="button" data-val="shaky">🤔 Still shaky</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function searchVocabTerms(rawQuery){
+  const q = norm(rawQuery);
+  if (!q) return [];
+  const items = window.VOCAB_DATA || [];
+  const scored = items.map(item=>{
+    const t = norm(item.term);
+    let score = 0;
+    if (t === q) score = 100;
+    else if (t.startsWith(q)) score = 60;
+    else if (t.includes(q)) score = 40;
+    else if (norm(item.definition).includes(q)) score = 10;
+    return {item, score};
+  });
+  return scored.filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,20);
+}
+
+function renderVocabResults(matches, rawQuery){
+  const el = document.getElementById("vresults");
+  if (!el) return; // this page has no Vocabulary search box
+  if (!rawQuery.trim()){ el.innerHTML = ""; return; }
+  if (!matches.length){
+    el.innerHTML = `<div class="empty-state">No vocab term matches “${rawQuery.replace(/</g,"&lt;")}.” Try browsing by unit below.</div>`;
+    return;
+  }
+  el.innerHTML = matches.map(m=>vocabCardHTML(m.item)).join("");
+  attachCardHandlers(el);
+}
+
+const vqInput = document.getElementById("vq");
+let vocabDebounce;
+if (vqInput) vqInput.addEventListener("input", ()=>{
+  clearTimeout(vocabDebounce);
+  vocabDebounce = setTimeout(()=>{
+    const val = vqInput.value;
+    renderVocabResults(searchVocabTerms(val), val);
+  }, 150);
+});
+
+function buildVocabBrowse(){
+  const el = document.getElementById("vocabBrowse");
+  if (!el) return; // this page has no Vocabulary browse section
+  const items = window.VOCAB_DATA || [];
+  if (!items.length) return;
+  const units = {};
+  items.forEach(v=>{
+    units[v.unit] = units[v.unit] || {title: v.unitTitle, lessons: {}, order: [], count: 0};
+    if (!units[v.unit].lessons[v.lesson]){ units[v.unit].lessons[v.lesson] = []; units[v.unit].order.push(v.lesson); }
+    units[v.unit].lessons[v.lesson].push(v);
+    units[v.unit].count++;
+  });
+  const unitNums = Object.keys(units).map(Number).sort((a,b)=>a-b);
+  el.innerHTML = unitNums.map(u=>{
+    const grp = units[u];
+    const body = grp.order.map(lesson=>{
+      const cards = grp.lessons[lesson].map(vocabCardHTML).join("");
+      return `<div class="vocab-lesson-heading">Lesson ${lesson}</div>${cards}`;
+    }).join("");
+    return `<details class="unit-group">
+      <summary><span class="u-chev">▸</span> Unit ${u}: ${grp.title} <span class="vocab-count">${grp.count} terms</span></summary>
+      <div class="unit-list vocab-list">${body}</div>
+    </details>`;
+  }).join("");
+  attachCardHandlers(el);
+}
+buildVocabBrowse();
+
+const vocabExpandAllBtn = document.getElementById("vocabExpandAll");
+if (vocabExpandAllBtn) vocabExpandAllBtn.addEventListener("click", (e)=>{
+  const details = document.getElementById("vocabBrowse").querySelectorAll("details");
+  const anyClosed = Array.from(details).some(d=>!d.open);
+  details.forEach(d=> d.open = anyClosed);
+  e.target.textContent = anyClosed ? "Collapse all" : "Expand all";
+});
 
 function jumpToLesson(lessonNum){
   if (!resultsEl || !qInput){
@@ -699,12 +791,14 @@ if (copyLogBtn) copyLogBtn.addEventListener("click", ()=>{
 
   function suggestionRowHTML(l){
     const pageLine = l.pages
-      ? `TPS8e p. ${l.pages}${l.section ? " (Section " + l.section + ")" : ""}`
-      : "See the Math Medic lesson notes";
+      ? `Textbook: TPS8e p. ${l.pages}${l.section ? " (Section " + l.section + ")" : ""} — read it on BFW Achieve`
+      : "Textbook: not mapped for this lesson yet";
     return `<div class="ask-suggest-item">
       <div class="asi-lesson">Lesson ${l.lesson} — ${l.title.replace(/</g,"&lt;")}</div>
       <div class="asi-pages">${pageLine}</div>
-      <button type="button" class="asi-go" data-lesson="${l.lesson}">Go to Lesson ${l.lesson} →</button>
+      <div class="asi-actions">
+        <button type="button" class="asi-go" data-lesson="${l.lesson}">Open Lesson ${l.lesson} on this site →</button>
+      </div>
     </div>`;
   }
 
@@ -940,9 +1034,9 @@ if (copyLogBtn) copyLogBtn.addEventListener("click", ()=>{
     window.addEventListener("resize", ()=> draw(t));
   }
 
-  // ---- Calculator Help: floating stats symbols ----
-  function initSymbols(layer){
-    const SYMS = ["Σ","μ","σ","x̄","p̂","z","χ²","r²","π","∞"];
+  // ---- Calculator Help: floating stats symbols (also reused, with a different glyph set, for Vocabulary) ----
+  function initSymbols(layer, symbolSet){
+    const SYMS = symbolSet || ["Σ","μ","σ","x̄","p̂","z","χ²","r²","π","∞"];
     const n = 10;
     const items = [];
     for (let i=0;i<n;i++){
@@ -1075,6 +1169,9 @@ if (copyLogBtn) copyLogBtn.addEventListener("click", ()=>{
   } else if (kind === "symbols"){
     const layer = header.querySelector(".symbol-layer");
     if (layer) initSymbols(layer);
+  } else if (kind === "glossary"){
+    const layer = header.querySelector(".symbol-layer");
+    if (layer) initSymbols(layer, ["“ ”","A→Z","def.","✓","?","¶","≈","…","§","✎"]);
   } else if (kind === "band"){
     const canvas = header.querySelector("canvas.bg-anim");
     if (canvas) initBand(canvas);

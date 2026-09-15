@@ -221,7 +221,6 @@
   .reading-box .note{font-size:.88rem; color:var(--ink-soft);}
   .reading-box.missing{background:var(--warning-tint);}
   .reading-box.missing .pages{color:var(--warning);}
-  .mm-link{font-size:.88rem; margin-top:2px;}
 
   .problem{
     border:1px solid var(--line); border-radius:12px; margin-top:12px; padding:15px 16px;
@@ -462,6 +461,16 @@
 }
 .problem.interp-card textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-tint); background:var(--surface);}
 
+/* ---------- vocabulary flashcards (reuses .problem for the card shell) ---------- */
+.problem.vocab-card .vc-meta{font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--accent-deep); font-weight:700; margin-bottom:8px;}
+.problem.vocab-card .vc-term{font-family:"Fraunces", Georgia, serif; font-weight:700; font-size:1.3rem; letter-spacing:-.01em;}
+.vocab-lesson-heading{
+  font-size:.76rem; text-transform:uppercase; letter-spacing:.07em; font-weight:700; color:var(--ink-soft);
+  margin:20px 0 10px; padding-top:14px; border-top:1px solid var(--line);
+}
+.vocab-list .vocab-lesson-heading:first-child{margin-top:6px; padding-top:0; border-top:none;}
+.vocab-count{font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.72rem; color:var(--ink-soft); font-weight:500; margin-left:6px;}
+
 /* ---------- "Ask Mr. Fox" chat launcher (bottom-corner, Stripe-style) ---------- */
 .ask-fab{
   position:fixed; right:22px; bottom:22px; z-index:40;
@@ -518,8 +527,9 @@
 }
 .ask-suggest-item .asi-lesson{font-size:.88rem; font-weight:700; color:var(--ink);}
 .ask-suggest-item .asi-pages{font-size:.78rem; color:var(--ink-soft);}
+.asi-actions{display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin-top:4px;}
 .asi-go{
-  align-self:flex-start; margin-top:4px; border:none; background:var(--accent); color:#fff;
+  border:none; background:var(--accent); color:#fff;
   font-size:.8rem; font-weight:700; border-radius:7px; padding:6px 12px; cursor:pointer;
   transition:filter .15s ease;
 }

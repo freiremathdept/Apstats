@@ -9,5 +9,1518 @@ window.CALENDAR_EVENTS = [
 ];
 
 // Interpretation Practice — new standalone skill, added 2026-09-11 for the GitHub Pages multi-page rebuild.
-window.INTERP_DATA = [{"id": "sd-1", "category": "Standard Deviation", "title": "House ages in a neighborhood", "setup": "A city's building-permit office studied the age (in years) of houses in a downtown neighborhood. The mean age is 47.5 years with a standard deviation of 12.8 years.", "prompt": "Write a sentence interpreting the standard deviation in context.", "model": "The age of houses in this downtown neighborhood typically varies by 12.8 years from the mean age of 47.5 years.", "note": "Template: \u201cThe [context] typically varies by [SD] from the mean of [mean].\u201d Don't just say \u201cthe data is spread out by 12.8\u201d \u2014 name the actual variable and give both numbers.", "unit": null}, {"id": "pctl-1", "category": "Percentile", "title": "Civics exam score", "setup": "On a national civics exam, a score of 82 is at the 68th percentile.", "prompt": "Write a sentence interpreting this percentile.", "model": "68% of test-takers' civics exam scores are less than or equal to 82.", "note": "Template: \u201c[percentile]% of [context] are less than or equal to [value].\u201d A common mistake is saying \u201c68% scored an 82\u201d \u2014 percentile is about everyone at or below that score, not people who scored exactly that value.", "unit": null}, {"id": "z-1", "category": "z-score", "title": "Resting heart rate", "setup": "Adult resting heart rates have a mean of 72 beats per minute (bpm) with a standard deviation of 8 bpm. Maria's resting heart rate is 60 bpm.", "prompt": "Calculate Maria's z-score and write a sentence interpreting it in context.", "model": "Maria's resting heart rate of 60 bpm is 1.5 standard deviations below the mean of 72 bpm. (z = \u22121.5)", "note": "z = (60 \u2212 72) / 8 = \u22121.5. Template: \u201c[value] with context is [z] standard deviations above/below the mean of [mean].\u201d Say \u201cbelow\u201d for a negative z, not \u201cnegative 1.5 standard deviations above.\u201d", "unit": null}, {"id": "prob-1", "category": "Probability", "title": "Chance of rain", "unit": 2, "setup": "A weather model estimates P(rain tomorrow) = 0.35.", "prompt": "Write a sentence interpreting this probability.", "model": "After many, many days with this same weather pattern, the proportion of days it will rain is about 0.35.", "note": "Template: \u201cAfter many, many [context], the proportion of times [event] will occur is about P(event).\u201d Probability describes long-run proportion, not a guarantee about tomorrow specifically."}, {"id": "cond-1", "category": "Conditional Probability", "title": "Tutoring and passing the final", "unit": 2, "setup": "Among students who attend a certain tutoring center, P(pass the final | attend tutoring) = 0.82.", "prompt": "Write a sentence interpreting this conditional probability.", "model": "Given that a student attends the tutoring center, there is a 0.82 probability the student passes the final.", "note": "Template: \u201cGiven [context B], there is a [P(A|B)] probability of [context A].\u201d Always name the condition first \u2014 it changes the population you're talking about."}, {"id": "ev-1", "category": "Expected Value", "title": "Pets per household", "unit": 2, "setup": "Let X = the number of pets owned by a randomly selected household in a survey. E(X) = 1.7 pets.", "prompt": "Write a sentence interpreting this expected value.", "model": "If the random process of selecting a household and recording its number of pets is repeated many, many times, the average number of pets we can expect a household to own is 1.7 pets.", "note": "Decimals are fine for an expected value even though no single household can own 1.7 pets \u2014 it's a long-run average, not a possible outcome."}, {"id": "binmean-1", "category": "Binomial Mean", "title": "Damaged packages", "unit": 2, "setup": "A warehouse ships 300 packages daily, and historically 4% arrive damaged. Let Y = the number of damaged packages among a random sample of 300 (np = 12).", "prompt": "Write a sentence interpreting the binomial mean.", "model": "After many, many days, the average number of damaged packages out of 300 is 12 packages.", "note": "np = 300 \u00d7 0.04 = 12. Template: \u201cAfter many, many trials, the average # of [success context] out of n is nP.\u201d"}, {"id": "binsd-1", "category": "Binomial Standard Deviation", "title": "Damaged packages, continued", "unit": 2, "setup": "Same warehouse: n = 300, p = 0.04. The standard deviation of the number of damaged packages is \u221a(300 \u00d7 0.04 \u00d7 0.96) \u2248 3.39.", "prompt": "Write a sentence interpreting this binomial standard deviation.", "model": "The number of damaged packages out of 300 typically varies by about 3.39 packages from the mean of 12 packages.", "note": "\u221a(np(1\u2212p)) = \u221a(300 \u00d7 0.04 \u00d7 0.96) = \u221a11.52 \u2248 3.39."}, {"id": "sdphat-1", "category": "SD of Sample Proportions", "title": "Ballot measure support", "unit": 3, "setup": "In repeated random samples of 150 registered voters, the population proportion who support a ballot measure is p = 0.55. The standard deviation of the sampling distribution of p\u0302 is \u221a(0.55\u00d70.45/150) \u2248 0.041.", "prompt": "Write a sentence interpreting this standard deviation.", "model": "The sample proportion of voters who support the ballot measure typically varies by about 0.041 from the population proportion of 0.55.", "note": "This describes how much p\u0302 bounces around from sample to sample \u2014 not the standard deviation of individual voters' opinions."}, {"id": "sdxbar-1", "category": "SD of Sample Means", "title": "Cereal box weight", "unit": 3, "setup": "Boxes of a cereal brand have population mean weight \u03bc = 340 g and population standard deviation \u03c3 = 15 g. For random samples of 25 boxes, the standard deviation of the sampling distribution of x\u0304 is 15/\u221a25 = 3 g.", "prompt": "Write a sentence interpreting this standard deviation.", "model": "The sample mean weight of a box of cereal typically varies by 3 grams from the population mean of 340 grams.", "note": "This is about how much x\u0304 (the sample mean, for samples of size 25) varies \u2014 smaller than the individual-box SD of 15 g because averaging reduces variability."}, {"id": "ci-prop-1", "category": "Confidence Interval (proportion)", "title": "Freshmen who use a planner", "unit": 3, "setup": "A 95% confidence interval for the proportion of freshmen who use a planner is (0.42, 0.58).", "prompt": "Write a sentence interpreting this confidence interval.", "model": "We are 95% confident that the interval from 0.42 to 0.58 captures the true proportion of freshmen who use a planner.", "note": "Say \u201cthe interval from A to B captures the parameter\u201d \u2014 not \u201cthe parameter is between A and B\u201d (that phrasing describes the parameter as random, not the interval)."}, {"id": "ci-mean-1", "category": "Confidence Interval (mean)", "title": "Phone battery life", "unit": 4, "setup": "A 90% t-interval for the mean battery life of a phone model, based on a sample of 30 phones, is (11.2, 12.8) hours.", "prompt": "Write a sentence interpreting this confidence interval.", "model": "We are 90% confident that the interval from 11.2 to 12.8 hours captures the true mean battery life of this phone model.", "note": "Same template as the proportion case \u2014 swap in the mean's units and context."}, {"id": "conflevel-1", "category": "Confidence Level", "title": "Employee commute times", "unit": 3, "setup": "A statistician constructs a 95% confidence interval for the mean commute time of employees at a company, using random samples of size 40.", "prompt": "Write a sentence interpreting the 95% confidence level (not the interval itself).", "model": "If we select many, many random samples of size 40 and calculate a confidence interval for each, about 95% of them will capture the true mean commute time of employees at this company.", "note": "Confidence level is about the long-run success rate of the *method* across many samples \u2014 it is not the probability that this one interval is correct."}, {"id": "pvalue-1", "category": "p-value", "title": "New battery life claim", "unit": 4, "setup": "A company claims its new battery lasts a mean of 20 hours (H0: \u03bc = 20), tested against Ha: \u03bc < 20. A random sample gives a p-value of 0.032.", "prompt": "Write a sentence interpreting this p-value.", "model": "Assuming the true mean battery life is 20 hours (H0: \u03bc = 20), there is a 0.032 probability of getting a sample mean this low or lower, purely by chance.", "note": "A p-value is a conditional probability \u2014 it assumes H0 is true. Never say \u201cthere's a 3.2% chance H0 is true.\u201d"}, {"id": "conclusion-1", "category": "Hypothesis Test Conclusion", "title": "New battery life claim, continued", "unit": 4, "setup": "Same battery test: p-value = 0.032, \u03b1 = 0.05, Ha: \u03bc < 20.", "prompt": "Write the full conclusion for this hypothesis test.", "model": "Because the p-value 0.032 < 0.05, we reject H0. We do have convincing statistical evidence that the true mean battery life is less than 20 hours (Ha: \u03bc < 20).", "note": "Always state the comparison (p < \u03b1 or p > \u03b1), the decision (reject/fail to reject H0), and the conclusion in context \u2014 all three parts earn separate points on the AP rubric."}, {"id": "corr-1", "category": "Correlation (r)", "title": "Engine size and gas mileage", "unit": 5, "setup": "For 20 cars, the correlation between engine size (liters) and highway gas mileage (mpg) is r = \u22120.81.", "prompt": "Write a sentence interpreting this correlation.", "model": "The linear association between engine size and highway gas mileage is fairly strong and negative.", "note": "Correlation describes strength and direction of a *linear* association \u2014 it says nothing about slope, causation, or units."}, {"id": "resid-1", "category": "Residual", "title": "Studying and exam scores", "unit": 5, "setup": "A regression predicts exam score from hours studied. A student who studied 5 hours actually scored 88; the regression predicted 82.5 for 5 hours studied (residual = +5.5).", "prompt": "Write a sentence interpreting this residual.", "model": "The actual exam score was 5.5 points above the number predicted when a student studied for 5 hours.", "note": "Residual = actual \u2212 predicted. A positive residual means the actual value was *above* the line, not below it."}, {"id": "yint-1", "category": "y-intercept", "title": "Monthly heating cost", "unit": 5, "setup": "A regression predicts monthly heating cost ($) from average outdoor temperature (\u00b0F): predicted cost = 210 \u2212 3.5(temperature). The y-intercept is 210.", "prompt": "Write a sentence interpreting this y-intercept.", "model": "The predicted monthly heating cost when the average outdoor temperature is 0\u00b0F is $210.", "note": "The y-intercept is the prediction at x = 0 \u2014 it's only meaningful if x = 0 is realistic for the context (here, 0\u00b0F is an extreme but real temperature, so it's interpretable)."}, {"id": "slope-1", "category": "Slope", "title": "Monthly heating cost, continued", "unit": 5, "setup": "Same heating-cost regression: predicted cost = 210 \u2212 3.5(temperature). The slope is \u22123.5.", "prompt": "Write a sentence interpreting this slope.", "model": "The predicted monthly heating cost decreases by $3.50 for each additional degree Fahrenheit in average outdoor temperature.", "note": "Template: \u201cThe predicted [y-context] increases/decreases by [slope] for each additional [x-context].\u201d Use \u201cdecreases\u201d for a negative slope, never \u201cincreases by \u22123.5.\u201d"}, {"id": "rsq-1", "category": "Coefficient of Determination (r\u00b2)", "title": "Monthly heating cost, r\u00b2", "unit": 5, "setup": "For the heating-cost regression, r\u00b2 = 0.84 (84%).", "prompt": "Write a sentence interpreting this r\u00b2.", "model": "About 84% of the variation in monthly heating cost can be explained by the linear relationship with average outdoor temperature.", "note": "r\u00b2 is about variation *explained*, not about how many points fall exactly on the line, and not about prediction accuracy for one house."}]
-;
+window.INTERP_DATA = [{"id": "sd-1", "category": "Standard Deviation", "title": "House ages in a neighborhood", "setup": "A city's building-permit office studied the age (in years) of houses in a downtown neighborhood. The mean age is 47.5 years with a standard deviation of 12.8 years.", "prompt": "Write a sentence interpreting the standard deviation in context.", "model": "The age of houses in this downtown neighborhood typically varies by 12.8 years from the mean age of 47.5 years.", "note": "Template: “The [context] typically varies by [SD] from the mean of [mean].” Don't just say “the data is spread out by 12.8” — name the actual variable and give both numbers.", "unit": null}, {"id": "sd-2", "category": "Standard Deviation", "title": "Weekly grocery spending", "setup": "A town's chamber of commerce surveyed households about weekly grocery spending. The mean weekly spending is $142.50 with a standard deviation of $28.75.", "prompt": "Write a sentence interpreting the standard deviation in context.", "model": "Weekly grocery spending for households in this town typically varies by $28.75 from the mean of $142.50.", "note": "Template: “The [context] typically varies by [SD] from the mean of [mean].” Name the actual variable (weekly grocery spending) and give both dollar amounts.", "unit": null}, {"id": "sd-3", "category": "Standard Deviation", "title": "Employee commute times", "setup": "A company's HR department recorded the one-way commute time (in minutes) for its 200 employees. The mean commute time is 34.2 minutes with a standard deviation of 9.6 minutes.", "prompt": "Write a sentence interpreting the standard deviation in context.", "model": "Commute times for employees at this company typically vary by 9.6 minutes from the mean of 34.2 minutes.", "note": "Don't just say “commute time varies by 9.6” — include the units (minutes) and the mean it's varying from.", "unit": null}, {"id": "pctl-1", "category": "Percentile", "title": "Civics exam score", "setup": "On a national civics exam, a score of 82 is at the 68th percentile.", "prompt": "Write a sentence interpreting this percentile.", "model": "68% of test-takers' civics exam scores are less than or equal to 82.", "note": "Template: “[percentile]% of [context] are less than or equal to [value].” A common mistake is saying “68% scored an 82” — percentile is about everyone at or below that score, not people who scored exactly that value.", "unit": null}, {"id": "pctl-2", "category": "Percentile", "title": "ACT composite score", "setup": "On the ACT, a composite score of 27 is at the 82nd percentile nationally.", "prompt": "Write a sentence interpreting this percentile.", "model": "82% of ACT test-takers' composite scores are less than or equal to 27.", "note": "Template: “[percentile]% of [context] are less than or equal to [value].” Don't say “82% scored a 27” — it's everyone at or below that score."}, {"id": "pctl-3", "category": "Percentile", "title": "Infant weight percentile", "setup": "At her 2-month checkup, a baby's weight of 8.2 pounds places her at the 40th percentile for weight among babies her age.", "prompt": "Write a sentence interpreting this percentile.", "model": "40% of babies at this age have a weight that is less than or equal to 8.2 pounds.", "note": "Keep the comparison group in the sentence (“babies at this age”) — a percentile is always relative to some reference group."}, {"id": "z-1", "category": "z-score", "title": "Resting heart rate", "setup": "Adult resting heart rates have a mean of 72 beats per minute (bpm) with a standard deviation of 8 bpm. Maria's resting heart rate is 60 bpm.", "prompt": "Calculate Maria's z-score and write a sentence interpreting it in context.", "model": "Maria's resting heart rate of 60 bpm is 1.5 standard deviations below the mean of 72 bpm. (z = −1.5)", "note": "z = (60 − 72) / 8 = −1.5. Template: “[value] with context is [z] standard deviations above/below the mean of [mean].” Say “below” for a negative z, not “negative 1.5 standard deviations above.”", "unit": null}, {"id": "z-2", "category": "z-score", "title": "SAT Math score", "setup": "SAT Math scores have a mean of 520 with a standard deviation of 100. Andre scored 610 on the Math section.", "prompt": "Calculate Andre's z-score and write a sentence interpreting it in context.", "model": "Andre's SAT Math score of 610 is 0.9 standard deviations above the mean of 520. (z = 0.9)", "note": "z = (610 − 520) / 100 = 0.9. Positive z means “above,” never “positive standard deviations above.”"}, {"id": "z-3", "category": "z-score", "title": "Cereal box weight", "setup": "Boxes of a certain cereal have a mean weight of 354 grams with a standard deviation of 4 grams. One box weighs 348 grams.", "prompt": "Calculate this box's z-score and write a sentence interpreting it in context.", "model": "This box's weight of 348 grams is 1.5 standard deviations below the mean of 354 grams. (z = −1.5)", "note": "z = (348 − 354) / 4 = −1.5. Say “below” for a negative z, not “negative 1.5 standard deviations above.”"}, {"id": "prob-1", "category": "Probability", "title": "Chance of rain", "unit": 2, "setup": "A weather model estimates P(rain tomorrow) = 0.35.", "prompt": "Write a sentence interpreting this probability.", "model": "After many, many days with this same weather pattern, the proportion of days it will rain is about 0.35.", "note": "Template: “After many, many [context], the proportion of times [event] will occur is about P(event).” Probability describes long-run proportion, not a guarantee about tomorrow specifically."}, {"id": "prob-2", "category": "Probability", "title": "Free-throw shooting", "setup": "A basketball player makes 72% of her free throws in the long run. P(make) = 0.72.", "prompt": "Write a sentence interpreting this probability.", "model": "After many, many free throws taken by this player, the proportion of times she makes the free throw is about 0.72.", "note": "Template: “After many, many context, the proportion of times that A occurs is about P(A).” Probability is a long-run relative frequency, not a guarantee for any single attempt."}, {"id": "prob-3", "category": "Probability", "title": "Defective items on a line", "setup": "A factory's quality control data show that P(defective item) = 0.03 for items produced on a certain line.", "prompt": "Write a sentence interpreting this probability.", "model": "After many, many items produced on this line, the proportion of times an item is defective is about 0.03.", "note": "Anchor the sentence to “many, many” repetitions of the random process — items produced on this line — not a single item."}, {"id": "cond-1", "category": "Conditional Probability", "title": "Tutoring and passing the final", "unit": 2, "setup": "Among students who attend a certain tutoring center, P(pass the final | attend tutoring) = 0.82.", "prompt": "Write a sentence interpreting this conditional probability.", "model": "Given that a student attends the tutoring center, there is a 0.82 probability the student passes the final.", "note": "Template: “Given [context B], there is a [P(A|B)] probability of [context A].” Always name the condition first — it changes the population you're talking about."}, {"id": "cond-2", "category": "Conditional Probability", "title": "Dog ownership given home ownership", "setup": "In a survey of local residents, P(owns a dog | owns a house) = 0.61.", "prompt": "Write a sentence interpreting this conditional probability.", "model": "Given that a resident owns a house, there is a 0.61 probability that the resident also owns a dog.", "note": "Template: “Given context B, there is a P(A|B) probability of context A.” The condition (owns a house) comes first in the sentence."}, {"id": "cond-3", "category": "Conditional Probability", "title": "Passing given tutoring", "setup": "At a high school, P(passes the course | attended tutoring sessions) = 0.88.", "prompt": "Write a sentence interpreting this conditional probability.", "model": "Given that a student attended tutoring sessions, there is a 0.88 probability that the student passes the course.", "note": "Keep the order matching the notation: the part after the bar (attended tutoring) is the given condition, stated first."}, {"id": "ev-1", "category": "Expected Value", "title": "Pets per household", "unit": 2, "setup": "Let X = the number of pets owned by a randomly selected household in a survey. E(X) = 1.7 pets.", "prompt": "Write a sentence interpreting this expected value.", "model": "If the random process of selecting a household and recording its number of pets is repeated many, many times, the average number of pets we can expect a household to own is 1.7 pets.", "note": "Decimals are fine for an expected value even though no single household can own 1.7 pets — it's a long-run average, not a possible outcome."}, {"id": "ev-2", "category": "Expected Value", "title": "Typos per manuscript page", "setup": "An editor models the number of typos on a randomly selected page of a manuscript. The expected value is 1.8 typos.", "prompt": "Write a sentence interpreting this expected value.", "model": "If the random process of selecting a page from this manuscript is repeated many, many times, the average number of typos we can expect is 1.8 typos.", "note": "Decimals are fine for an expected value even though you can't actually have 1.8 typos on one page — it's a long-run average."}, {"id": "ev-3", "category": "Expected Value", "title": "Returned items per day", "setup": "A retail store models the number of customers who return an item on a randomly selected day. The expected value is 4.6 customers.", "prompt": "Write a sentence interpreting this expected value.", "model": "If the random process of observing a day at this store is repeated many, many times, the average number of customers who return an item we can expect is 4.6 customers.", "note": "Name the random process being repeated (observing a day at this store), not just the number itself."}, {"id": "binmean-1", "category": "Binomial Mean", "title": "Damaged packages", "unit": 2, "setup": "A warehouse ships 300 packages daily, and historically 4% arrive damaged. Let Y = the number of damaged packages among a random sample of 300 (np = 12).", "prompt": "Write a sentence interpreting the binomial mean.", "model": "After many, many days, the average number of damaged packages out of 300 is 12 packages.", "note": "np = 300 × 0.04 = 12. Template: “After many, many trials, the average # of [success context] out of n is nP.”"}, {"id": "binmean-2", "category": "Binomial Mean", "title": "Spam emails in a batch", "setup": "Of the emails a spam filter reviews, 20% are actually spam. The filter reviews batches of 50 emails. μ = 10.", "prompt": "Write a sentence interpreting this binomial mean.", "model": "After many, many batches of 50 emails, the average number of spam emails out of 50 is 10 emails.", "note": "μ = np = 50(0.2) = 10. Keep “out of 50” in the sentence so it's clear this is per-batch, not overall."}, {"id": "binmean-3", "category": "Binomial Mean", "title": "Seed germination", "setup": "A gardener plants seeds from a packet in which 85% germinate. Batches of 40 seeds are planted. μ = 34.", "prompt": "Write a sentence interpreting this binomial mean.", "model": "After many, many batches of 40 seeds planted, the average number of seeds that germinate out of 40 is 34 seeds.", "note": "μ = np = 40(0.85) = 34."}, {"id": "binsd-1", "category": "Binomial Standard Deviation", "title": "Damaged packages, continued", "unit": 2, "setup": "Same warehouse: n = 300, p = 0.04. The standard deviation of the number of damaged packages is √(300 × 0.04 × 0.96) ≈ 3.39.", "prompt": "Write a sentence interpreting this binomial standard deviation.", "model": "The number of damaged packages out of 300 typically varies by about 3.39 packages from the mean of 12 packages.", "note": "√(np(1−p)) = √(300 × 0.04 × 0.96) = √11.52 ≈ 3.39."}, {"id": "binsd-2", "category": "Binomial Standard Deviation", "title": "Spam emails in a batch", "setup": "Using the spam filter setting above (n = 50, p = 0.2), σ ≈ 2.83.", "prompt": "Write a sentence interpreting this binomial standard deviation.", "model": "The number of spam emails out of 50 typically varies by about 2.83 emails from the mean of 10 emails.", "note": "σ = √(np(1−p)) = √(50·0.2·0.8) = √8 ≈ 2.83."}, {"id": "binsd-3", "category": "Binomial Standard Deviation", "title": "Seed germination", "setup": "Using the seed germination setting above (n = 40, p = 0.85), σ ≈ 2.26.", "prompt": "Write a sentence interpreting this binomial standard deviation.", "model": "The number of seeds that germinate out of 40 typically varies by about 2.26 seeds from the mean of 34 seeds.", "note": "σ = √(np(1−p)) = √(40·0.85·0.15) = √5.1 ≈ 2.26."}, {"id": "sdphat-1", "category": "SD of Sample Proportions", "title": "Ballot measure support", "unit": 3, "setup": "In repeated random samples of 150 registered voters, the population proportion who support a ballot measure is p = 0.55. The standard deviation of the sampling distribution of p̂ is √(0.55×0.45/150) ≈ 0.041.", "prompt": "Write a sentence interpreting this standard deviation.", "model": "The sample proportion of voters who support the ballot measure typically varies by about 0.041 from the population proportion of 0.55.", "note": "This describes how much p̂ bounces around from sample to sample — not the standard deviation of individual voters' opinions."}, {"id": "sdphat-2", "category": "SD of Sample Proportions", "title": "Loyalty app usage", "setup": "In random samples of 80 shoppers, the sample proportion who use a store's loyalty app typically varies with σₚ̂ = 0.05, and the population proportion is p = 0.42.", "prompt": "Write a sentence interpreting this standard deviation of the sample proportion.", "model": "The sample proportion of shoppers who use the store's loyalty app typically varies by 0.05 from the population proportion of 0.42.", "note": "Template: “The sample proportion of [success] typically varies by σₚ̂ from the population proportion of p.”"}, {"id": "sdphat-3", "category": "SD of Sample Proportions", "title": "Defective light bulbs", "setup": "In random samples of light bulbs from a factory, the sample proportion of defective bulbs typically varies with σₚ̂ = 0.03, and the population proportion is p = 0.08.", "prompt": "Write a sentence interpreting this standard deviation of the sample proportion.", "model": "The sample proportion of defective bulbs typically varies by 0.03 from the population proportion of 0.08.", "note": "Keep “sample proportion” and “population proportion” distinct — don't blur the two into one “proportion.”"}, {"id": "sdxbar-1", "category": "SD of Sample Means", "title": "Cereal box weight", "unit": 3, "setup": "Boxes of a cereal brand have population mean weight μ = 340 g and population standard deviation σ = 15 g. For random samples of 25 boxes, the standard deviation of the sampling distribution of x̄ is 15/√25 = 3 g.", "prompt": "Write a sentence interpreting this standard deviation.", "model": "The sample mean weight of a box of cereal typically varies by 3 grams from the population mean of 340 grams.", "note": "This is about how much x̄ (the sample mean, for samples of size 25) varies — smaller than the individual-box SD of 15 g because averaging reduces variability."}, {"id": "sdxbar-2", "category": "SD of Sample Means", "title": "Smartphone battery life", "setup": "In random samples of smartphones from an assembly line, the sample mean battery life typically varies with σₓ̄ = 1.4 hours, and the population mean is μ = 11.2 hours.", "prompt": "Write a sentence interpreting this standard deviation of the sample mean.", "model": "The sample mean battery life of smartphones typically varies by 1.4 hours from the population mean of 11.2 hours.", "note": "Template: “The sample mean amount of x typically varies by σₓ̄ from the population mean of μ.”"}, {"id": "sdxbar-3", "category": "SD of Sample Means", "title": "Nightly homework time", "setup": "In random samples of students, the sample mean amount of time spent on homework each night typically varies with σₓ̄ = 0.6 hours, and the population mean is μ = 2.1 hours.", "prompt": "Write a sentence interpreting this standard deviation of the sample mean.", "model": "The sample mean amount of time students spend on homework each night typically varies by 0.6 hours from the population mean of 2.1 hours.", "note": "This describes how sample means bounce around — not how individual students' homework times vary."}, {"id": "ci-prop-1", "category": "Confidence Interval (proportion)", "title": "Freshmen who use a planner", "unit": 3, "setup": "A 95% confidence interval for the proportion of freshmen who use a planner is (0.42, 0.58).", "prompt": "Write a sentence interpreting this confidence interval.", "model": "We are 95% confident that the interval from 0.42 to 0.58 captures the true proportion of freshmen who use a planner.", "note": "Say “the interval from A to B captures the parameter” — not “the parameter is between A and B” (that phrasing describes the parameter as random, not the interval)."}, {"id": "ci-prop-2", "category": "Confidence Interval (proportion)", "title": "Support for a recycling policy", "setup": "A pollster constructs a 90% confidence interval for the proportion of all adults in a city who support a new recycling policy: (0.61, 0.69).", "prompt": "Write a sentence interpreting this confidence interval.", "model": "We are 90% confident that the interval from 0.61 to 0.69 captures the true proportion of all adults in this city who support the new recycling policy.", "note": "Template: “We are C% confident that the interval from A to B captures the population parameter in context.” Name the population (all adults in this city), not just the sample."}, {"id": "ci-prop-3", "category": "Confidence Interval (proportion)", "title": "Defective parts from a supplier", "setup": "A quality engineer constructs a 95% confidence interval for the proportion of parts from a supplier that are defective: (0.018, 0.026).", "prompt": "Write a sentence interpreting this confidence interval.", "model": "We are 95% confident that the interval from 0.018 to 0.026 captures the true proportion of all parts from this supplier that are defective.", "note": "Avoid saying “95% chance the true proportion is in this interval” — the interval either captures it or it doesn't; the 95% describes the method."}, {"id": "ci-mean-1", "category": "Confidence Interval (mean)", "title": "Phone battery life", "unit": 4, "setup": "A 90% t-interval for the mean battery life of a phone model, based on a sample of 30 phones, is (11.2, 12.8) hours.", "prompt": "Write a sentence interpreting this confidence interval.", "model": "We are 90% confident that the interval from 11.2 to 12.8 hours captures the true mean battery life of this phone model.", "note": "Same template as the proportion case — swap in the mean's units and context."}, {"id": "ci-mean-2", "category": "Confidence Interval (mean)", "title": "Weekly study hours", "setup": "A researcher constructs a 95% confidence interval for the mean number of hours per week that students at a large high school spend studying: (3.1, 3.7).", "prompt": "Write a sentence interpreting this confidence interval.", "model": "We are 95% confident that the interval from 3.1 to 3.7 captures the true mean number of hours per week that students at this high school spend studying.", "note": "Name the population mean being estimated (all students at this high school), in the same units given (hours per week)."}, {"id": "ci-mean-3", "category": "Confidence Interval (mean)", "title": "Commute distance", "setup": "A city planner constructs a 90% confidence interval for the mean one-way commute distance (in miles) of residents: (8.2, 10.6).", "prompt": "Write a sentence interpreting this confidence interval.", "model": "We are 90% confident that the interval from 8.2 to 10.6 captures the true mean one-way commute distance, in miles, of all residents in this city.", "note": "Keep the units (miles) in the sentence — a number alone isn't a complete interpretation."}, {"id": "conflevel-1", "category": "Confidence Level", "title": "Employee commute times", "unit": 3, "setup": "A statistician constructs a 95% confidence interval for the mean commute time of employees at a company, using random samples of size 40.", "prompt": "Write a sentence interpreting the 95% confidence level (not the interval itself).", "model": "If we select many, many random samples of size 40 and calculate a confidence interval for each, about 95% of them will capture the true mean commute time of employees at this company.", "note": "Confidence level is about the long-run success rate of the *method* across many samples — it is not the probability that this one interval is correct."}, {"id": "conflevel-2", "category": "Confidence Level", "title": "Battery lifespan estimate", "setup": "A manufacturer uses a 95% confidence level to estimate the mean lifespan (in hours) of a certain battery.", "prompt": "Write a sentence interpreting this confidence level.", "model": "If we select many, many samples of the same size and calculate a 95% confidence interval for each, about 95% of them will capture the true mean lifespan of this battery.", "note": "Confidence level describes the long-run success rate of the *method* across many samples, not the chance for this one interval."}, {"id": "conflevel-3", "category": "Confidence Level", "title": "Defect rate estimate", "setup": "An engineer uses a 99% confidence level to estimate the true proportion of parts with a manufacturing defect.", "prompt": "Write a sentence interpreting this confidence level.", "model": "If we select many, many samples of the same size and calculate a 99% confidence interval for each, about 99% of them will capture the true proportion of parts with a manufacturing defect.", "note": "Don't collapse this into “99% confident” — that's the confidence-interval interpretation, not the confidence-level interpretation."}, {"id": "pvalue-1", "category": "p-value", "title": "New battery life claim", "unit": 4, "setup": "A company claims its new battery lasts a mean of 20 hours (H0: μ = 20), tested against Ha: μ < 20. A random sample gives a p-value of 0.032.", "prompt": "Write a sentence interpreting this p-value.", "model": "Assuming the true mean battery life is 20 hours (H0: μ = 20), there is a 0.032 probability of getting a sample mean this low or lower, purely by chance.", "note": "A p-value is a conditional probability — it assumes H0 is true. Never say “there's a 3.2% chance H0 is true.”"}, {"id": "pvalue-2", "category": "p-value", "title": "Pizza delivery time claim", "setup": "A pizza chain claims its mean delivery time is 30 minutes (H₀: μ = 30). A sample of deliveries had a mean of 27.8 minutes, resulting in a p-value of 0.041.", "prompt": "Write a sentence interpreting this p-value.", "model": "Assuming the mean delivery time is actually 30 minutes (H₀: μ = 30), there is a 0.041 probability of getting a sample mean of 27.8 minutes or less, purely by chance.", "note": "Always start from “Assuming H₀ is true…” — a p-value is a conditional probability, not the probability H₀ is true."}, {"id": "pvalue-3", "category": "p-value", "title": "Airline on-time rate claim", "setup": "An airline claims 80% of its flights arrive on time (H₀: p = 0.80). A sample of flights had a sample proportion of 0.86 on time, resulting in a p-value of 0.017.", "prompt": "Write a sentence interpreting this p-value.", "model": "Assuming the true proportion of on-time flights is actually 0.80 (H₀: p = 0.80), there is a 0.017 probability of getting a sample proportion of 0.86 or more, purely by chance.", "note": "Match the direction (“or more” here, since 0.86 > 0.80) to which tail the sample result fell in."}, {"id": "conclusion-1", "category": "Hypothesis Test Conclusion", "title": "New battery life claim, continued", "unit": 4, "setup": "Same battery test: p-value = 0.032, α = 0.05, Ha: μ < 20.", "prompt": "Write the full conclusion for this hypothesis test.", "model": "Because the p-value 0.032 < 0.05, we reject H0. We do have convincing statistical evidence that the true mean battery life is less than 20 hours (Ha: μ < 20).", "note": "Always state the comparison (p < α or p > α), the decision (reject/fail to reject H0), and the conclusion in context — all three parts earn separate points on the AP rubric."}, {"id": "conclusion-2", "category": "Hypothesis Test Conclusion", "title": "Pizza delivery time conclusion", "setup": "Using the pizza delivery time test above (p-value = 0.041), a significance level of α = 0.05 was used.", "prompt": "Write a conclusion for this hypothesis test.", "model": "Because the p-value 0.041 < 0.05, we reject H₀. We have convincing statistical evidence that the mean delivery time is less than 30 minutes (Hₐ: μ < 30).", "note": "Always state both halves: the reject/fail-to-reject decision AND what that means in context."}, {"id": "conclusion-3", "category": "Hypothesis Test Conclusion", "title": "Airline on-time rate conclusion", "setup": "Using the airline on-time test above (p-value = 0.017), a significance level of α = 0.05 was used.", "prompt": "Write a conclusion for this hypothesis test.", "model": "Because the p-value 0.017 < 0.05, we reject H₀. We have convincing statistical evidence that the true proportion of on-time flights differs from 0.80 (Hₐ: p ≠ 0.80).", "note": "Match Ha's direction to the original claim — this was a two-sided test, so the conclusion says “differs from,” not “is greater than.”"}, {"id": "corr-1", "category": "Correlation (r)", "title": "Engine size and gas mileage", "unit": 5, "setup": "For 20 cars, the correlation between engine size (liters) and highway gas mileage (mpg) is r = −0.81.", "prompt": "Write a sentence interpreting this correlation.", "model": "The linear association between engine size and highway gas mileage is fairly strong and negative.", "note": "Correlation describes strength and direction of a *linear* association — it says nothing about slope, causation, or units."}, {"id": "corr-2", "category": "Correlation (r)", "title": "Study time and exam score", "setup": "For a group of students, the correlation between hours spent studying and exam score is r = 0.81.", "prompt": "Write a sentence interpreting this correlation.", "model": "The linear association between hours spent studying and exam score is fairly strong and positive. (r = 0.81)", "note": "Name both variables and give strength + direction — “r = 0.81” alone isn't a sentence."}, {"id": "corr-3", "category": "Correlation (r)", "title": "Temperature and hot chocolate sales", "setup": "For a coffee shop, the correlation between daily high temperature and hot chocolate sales is r = −0.34.", "prompt": "Write a sentence interpreting this correlation.", "model": "The linear association between daily high temperature and hot chocolate sales is weak and negative. (r = −0.34)", "note": "|r| = 0.34 is weak, not moderate — don't overstate the strength."}, {"id": "resid-1", "category": "Residual", "title": "Studying and exam scores", "unit": 5, "setup": "A regression predicts exam score from hours studied. A student who studied 5 hours actually scored 88; the regression predicted 82.5 for 5 hours studied (residual = +5.5).", "prompt": "Write a sentence interpreting this residual.", "model": "The actual exam score was 5.5 points above the number predicted when a student studied for 5 hours.", "note": "Residual = actual − predicted. A positive residual means the actual value was *above* the line, not below it."}, {"id": "resid-2", "category": "Residual", "title": "Exam score residual", "setup": "A regression model predicts exam score from hours studied. For a student who studied 3 hours, the residual was −4 points.", "prompt": "Write a sentence interpreting this residual.", "model": "The actual exam score was 4 points below the number predicted when a student studied for 3 hours.", "note": "A negative residual means the actual value was BELOW the prediction — don't say “−4 points above.”"}, {"id": "resid-3", "category": "Residual", "title": "Plant height residual", "setup": "A regression model predicts plant height from the number of days of growth. For a plant on day 14, the residual was 2.1 cm.", "prompt": "Write a sentence interpreting this residual.", "model": "The actual plant height was 2.1 centimeters above the number predicted when the plant had grown for 14 days.", "note": "Template: “The actual y was [residual] above/below the predicted value when x = #.”"}, {"id": "yint-1", "category": "y-intercept", "title": "Monthly heating cost", "unit": 5, "setup": "A regression predicts monthly heating cost ($) from average outdoor temperature (°F): predicted cost = 210 − 3.5(temperature). The y-intercept is 210.", "prompt": "Write a sentence interpreting this y-intercept.", "model": "The predicted monthly heating cost when the average outdoor temperature is 0°F is $210.", "note": "The y-intercept is the prediction at x = 0 — it's only meaningful if x = 0 is realistic for the context (here, 0°F is an extreme but real temperature, so it's interpretable)."}, {"id": "yint-2", "category": "y-intercept", "title": "Shipping cost model", "setup": "A regression model predicts the shipping cost (in dollars) of an online order from its weight (in pounds). The y-intercept of the model is 4.99.", "prompt": "Write a sentence interpreting this y-intercept.", "model": "The predicted shipping cost when an order weighs 0 pounds is $4.99.", "note": "The y-intercept is the predicted y when x = 0, in context — include units and note it's a *predicted* value."}, {"id": "yint-3", "category": "y-intercept", "title": "Plant growth model", "setup": "A regression model predicts a plant's height (in cm) from the number of weeks since planting. The y-intercept of the model is 2.3.", "prompt": "Write a sentence interpreting this y-intercept.", "model": "The predicted height of the plant when 0 weeks have passed since planting is 2.3 centimeters.", "note": "If x = 0 is outside the data (extrapolation), that's worth flagging too, but the interpretation sentence itself just states the predicted value at x = 0."}, {"id": "slope-1", "category": "Slope", "title": "Monthly heating cost, continued", "unit": 5, "setup": "Same heating-cost regression: predicted cost = 210 − 3.5(temperature). The slope is −3.5.", "prompt": "Write a sentence interpreting this slope.", "model": "The predicted monthly heating cost decreases by $3.50 for each additional degree Fahrenheit in average outdoor temperature.", "note": "Template: “The predicted [y-context] increases/decreases by [slope] for each additional [x-context].” Use “decreases” for a negative slope, never “increases by −3.5.”"}, {"id": "slope-2", "category": "Slope", "title": "Shipping cost model", "setup": "Using the shipping cost model above, the slope is 1.15.", "prompt": "Write a sentence interpreting this slope.", "model": "The predicted shipping cost increases by $1.15 for each additional pound the order weighs.", "note": "Template: “The predicted y increases/decreases by [slope] for each additional x.” Include units and the correct direction."}, {"id": "slope-3", "category": "Slope", "title": "Fuel tank model", "setup": "A regression model predicts the gallons of fuel remaining in a car's tank from the number of miles driven since fillup. The slope of the model is −0.032.", "prompt": "Write a sentence interpreting this slope.", "model": "The predicted gallons of fuel remaining decreases by 0.032 gallons for each additional mile driven.", "note": "A negative slope means “decreases,” never “increases by a negative amount.”"}, {"id": "rsq-1", "category": "Coefficient of Determination (r²)", "title": "Monthly heating cost, r²", "unit": 5, "setup": "For the heating-cost regression, r² = 0.84 (84%).", "prompt": "Write a sentence interpreting this r².", "model": "About 84% of the variation in monthly heating cost can be explained by the linear relationship with average outdoor temperature.", "note": "r² is about variation *explained*, not about how many points fall exactly on the line, and not about prediction accuracy for one house."}, {"id": "rsq-2", "category": "Coefficient of Determination (r²)", "title": "Study time and exam score", "setup": "For the study-time and exam-score data above, r² = 0.656.", "prompt": "Write a sentence interpreting this coefficient of determination.", "model": "About 65.6% of the variation in exam scores can be explained by the linear relationship with hours spent studying.", "note": "r² = 0.81² = 0.656. Say “variation in y explained by x,” not “accuracy” or “correlation.”"}, {"id": "rsq-3", "category": "Coefficient of Determination (r²)", "title": "Shipping cost model", "setup": "For the shipping cost and weight data above, r² = 0.91.", "prompt": "Write a sentence interpreting this coefficient of determination.", "model": "About 91% of the variation in shipping cost can be explained by the linear relationship with order weight.", "note": "Higher r² means the linear model's predictions track the actual data more closely, but it doesn't by itself prove weight *causes* the cost difference (though here, by the shipping company's own pricing rule, it does)."}];
+window.VOCAB_DATA = [
+{
+"id": "population",
+"term": "population",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "In a statistical study, the entire group of items or individuals we want information about. (p. 5)"
+},
+{
+"id": "sample",
+"term": "sample",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Subset of items or individuals in the population from which we collect data. (p. 5)"
+},
+{
+"id": "variable",
+"term": "variable",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A characteristic that can take different values for different observational units. (p. 6)"
+},
+{
+"id": "categorical-variable",
+"term": "categorical variable",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A variable that takes values that are labels, which place each item or individual into a particular group, called a category. (p. 7)"
+},
+{
+"id": "quantitative-variable",
+"term": "quantitative variable",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A variable that takes number values that are quantities — counts or measurements. (p. 7)"
+},
+{
+"id": "prospective-study",
+"term": "prospective study",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "An observational study that selects observational units at a point in time and gathers data about them both at that time and into the future. (p. 119)"
+},
+{
+"id": "retrospective-study",
+"term": "retrospective study",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "An observational study in which observational units are selected at a point in time and data about them are gathered from the past. (p. 119)"
+},
+{
+"id": "limitations",
+"term": "limitations",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The ways in which the design or execution of a study restrict what conclusions can be drawn from it."
+},
+{
+"id": "census",
+"term": "census",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Study that collects data from every item or individual in the population. (p. 5)"
+},
+{
+"id": "statistical-study",
+"term": "statistical study",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A study in which data are collected from a sample or population in order to answer an investigative question."
+},
+{
+"id": "datum",
+"term": "datum",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A single piece of information, such as the value of a variable for one individual (the singular of data)."
+},
+{
+"id": "investigative-question",
+"term": "investigative question",
+"lesson": "1.1",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The starting point of a statistical study: a question based on data that vary. The investigative question clearly identifies the variable(s) of interest, identifies the type of inference, including any parameters, and indicates the types of conclusions that can be made, including the population(s) to which the results can be generalized, and the possibility of a cause-and-effect conclusion. (pp. 4, 124)"
+},
+{
+"id": "bar-graph",
+"term": "bar graph",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Graph of data for one categorical variable that displays each category as a bar. The height of each bar shows the category frequency or relative frequency. (p. 15)"
+},
+{
+"id": "pie-chart",
+"term": "pie chart",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Graph of data for one categorical variable that displays each category as a slice of the \"pie.\" The area of each slice is proportional to the category frequency or relative frequency. A pie chart must include all the categories that make up a whole. (p. 17)"
+},
+{
+"id": "twoway-table",
+"term": "two-way table",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A table of counts or relative frequencies that summarizes data for two categorical variables measured on the same group of observational units. (p. 193)"
+},
+{
+"id": "observational-unit",
+"term": "observational unit",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "An item or individual described in a data set or statistical study. Observational units can be people, animals, or things. (p. 6)"
+},
+{
+"id": "frequency",
+"term": "frequency",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The number of observational units that have a particular value of a variable or fall into a particular category. (p. 14)"
+},
+{
+"id": "relative-frequency",
+"term": "relative frequency",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The proportion or percentage of observational units that have a particular value of a variable or fall into a particular category. (p. 14)"
+},
+{
+"id": "marginal-relative-frequency",
+"term": "marginal relative frequency",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Gives the percentage or proportion of observational units in a two-way table that have a specific value for one categorical variable. A marginal relative frequency is calculated by dividing a row or column total by the total for the entire two-way table. (p. 194)"
+},
+{
+"id": "joint-relative-frequency",
+"term": "joint relative frequency",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Gives the percentage or proportion of observational units in a two-way table that have a specific value for one categorical variable and a specific value for another categorical variable. A joint relative frequency is calculated by dividing the value in one cell by the total for the entire table. (p. 194)"
+},
+{
+"id": "conditional-relative-frequency",
+"term": "conditional relative frequency",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Gives the percentage or proportion of observational units that have a specific value for one categorical variable among the group of observational units that share the same value of another categorical variable (the condition). Calculated by dividing the value in one cell of a table by the total for the appropriate row or column. (p. 195)"
+},
+{
+"id": "explanatory-variable",
+"term": "explanatory variable",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Variable that may help predict or explain changes in a response variable. (p. 117)"
+},
+{
+"id": "response-variable",
+"term": "response variable",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Variable that measures an outcome of a statistical study. (p. 117)"
+},
+{
+"id": "sidebyside-bar-graph",
+"term": "side-by-side bar graph",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Graph of data for one categorical variable in each of two or more groups that displays a separate bar corresponding to each group for every category. The height of each bar shows the category frequency or relative frequency within that group. (p. 18)"
+},
+{
+"id": "segmented-bar-graph",
+"term": "segmented bar graph",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Graph that displays the distribution of a categorical variable as segments of a bar, with the area of each segment proportional to the number of observational units in the corresponding category. There is a separate bar for each group, corresponding to the values of another categorical variable. (p. 198)"
+},
+{
+"id": "association",
+"term": "association",
+"lesson": "1.2",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A relationship between two variables in which knowing the value of one variable helps us predict the value of the other. If knowing the value of one variable does not help us predict the value of the other, there is no association between the variables. (p. 200)"
+},
+{
+"id": "mosaic-plot",
+"term": "mosaic plot",
+"lesson": "1.3",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A segmented bar graph in which the width of each bar is also proportional to the number of observational units in the corresponding category. (p. 198)"
+},
+{
+"id": "conditional-distribution",
+"term": "conditional distribution",
+"lesson": "1.3",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The distribution of one categorical variable for just the individuals who share a particular value of another categorical variable."
+},
+{
+"id": "dotplot",
+"term": "dotplot",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A graph of data for one quantitative variable that shows each data value as a dot above its location on a number line. (p. 29)"
+},
+{
+"id": "stemandleaf-plot",
+"term": "stem-and-leaf plot",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Also called a stemplot. Graph of data for one quantitative variable that displays each data value separated into two parts: a stem, which consists of the leftmost digits, and a leaf, consisting of the final digit. The stems are ordered from least to greatest and arranged in a vertical column, with the leaves arranged in increasing order out from each stem. (p. 35)"
+},
+{
+"id": "histogram",
+"term": "histogram",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Graph of data for one quantitative variable that displays each interval of values on the horizontal axis as a bar. The height of each bar shows the frequency or relative frequency of data values in that interval. (p. 37)"
+},
+{
+"id": "discrete-variable",
+"term": "discrete variable",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A quantitative variable that can take a countable set of possible values with gaps between them on the number line. (p. 9)"
+},
+{
+"id": "continuous-variable",
+"term": "continuous variable",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A quantitative variable that can take any value in an interval on the number line. (p. 9)"
+},
+{
+"id": "shape",
+"term": "shape",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The overall pattern of a distribution, described by its number of peaks, symmetry, and skewness."
+},
+{
+"id": "skewed-right",
+"term": "skewed right",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Also \"skewed to the right.\" When the right side of a graph of quantitative data, which contains the half of the observations with the largest values, is much longer than the left side. (p. 31)"
+},
+{
+"id": "skewed-left",
+"term": "skewed left",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Also \"skewed to the left.\" When the left side of a graph of quantitative data, which contains the half of the observations with the smallest values, is much longer than the right side. (p. 30)"
+},
+{
+"id": "approximately-symmetric",
+"term": "approximately symmetric",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Also \"roughly symmetric.\" When the right side of a graph of quantitative data, which contains the half of the observations with the largest values, is approximately a mirror image of the left side. (p. 30)"
+},
+{
+"id": "unimodal",
+"term": "unimodal",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A distribution of quantitative data with one clear peak. (p. 32)"
+},
+{
+"id": "bimodal",
+"term": "bimodal",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A distribution of quantitative data with two clear peaks. (p. 32)"
+},
+{
+"id": "uniform",
+"term": "uniform",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Approximately uniform: a distribution in which the frequency of each possible value or outcome is about the same. (p. 1)"
+},
+{
+"id": "outlier",
+"term": "outlier",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A value that is unusually small or unusually large relative to the rest of the data. (p. 32)"
+},
+{
+"id": "cluster",
+"term": "cluster",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A group of items or individuals in the population that are located near each other. (p. 137)"
+},
+{
+"id": "center",
+"term": "center",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The midpoint of a distribution, often measured by the mean or median."
+},
+{
+"id": "mean",
+"term": "mean",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The average of all the individual data values in a distribution of quantitative data. To find the mean, add all the values and divide by the total number of data values. (p. 51)"
+},
+{
+"id": "median",
+"term": "median",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The midpoint of a distribution of quantitative data — the number such that about half the observations are smaller and about half are larger. (p. 50)"
+},
+{
+"id": "variability",
+"term": "variability",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The amount of spread, or scatter, in a distribution's values."
+},
+{
+"id": "range",
+"term": "range",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The distance between the minimum value and the maximum value of a distribution of quantitative data. That is, range = maximum − minimum. (p. 55)"
+},
+{
+"id": "context",
+"term": "context",
+"lesson": "1.4",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The background information (who, what, when, where, why) needed to make sense of data and interpret results."
+},
+{
+"id": "standard-deviation",
+"term": "standard deviation",
+"lesson": "1.5",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Measures the typical distance of values in a distribution from the mean. It is calculated by taking an \"average\" of the squared deviations of the individual data values from the mean, and then taking the square root. (p. 57)"
+},
+{
+"id": "resistant",
+"term": "resistant",
+"lesson": "1.5",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Also called robust. A statistical measure that is not affected much by extreme data values. (p. 53)"
+},
+{
+"id": "boxplot",
+"term": "boxplot",
+"lesson": "1.6",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "A visual representation of the five-number summary of a distribution of quantitative data. The box spans the quartiles and shows the variability of the middle half of the distribution. The median is marked with a line inside the box, and lines extend from the box to the smallest and largest observations that are not outliers, which are marked separately. (p. 66)"
+},
+{
+"id": "minimum",
+"term": "minimum",
+"lesson": "1.6",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The smallest value in a data set."
+},
+{
+"id": "first-quartile",
+"term": "first quartile",
+"lesson": "1.6",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Q1. If the observations in a data set are arranged left to right from smallest to largest, the first quartile Q1 is the median of the data values that lie to the left of the median in the ordered list. (p. 60)"
+},
+{
+"id": "third-quartile",
+"term": "third quartile",
+"lesson": "1.6",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "Q3. If the observations in a data set are arranged left to right from smallest to largest, the third quartile Q3 is the median of the data values that lie to the right of the median in the ordered list. (p. 60)"
+},
+{
+"id": "maximum",
+"term": "maximum",
+"lesson": "1.6",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The largest value in a data set."
+},
+{
+"id": "interquartile-range",
+"term": "interquartile range",
+"lesson": "1.6",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "IQR. The distance between the first and third quartiles of a distribution of quantitative data. In symbols, IQR = Q3 − Q1. (p. 60)"
+},
+{
+"id": "fivenumber-summary",
+"term": "five-number summary",
+"lesson": "1.6",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The minimum, first quartile Q1, median, third quartile Q3, and maximum of a distribution of quantitative data. (p. 66)"
+},
+{
+"id": "percentile",
+"term": "percentile",
+"lesson": "1.7",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "The pth percentile of a distribution is the value with p% of observations less than or equal to it. (p. 70)"
+},
+{
+"id": "standardized-score-zscore",
+"term": "standardized score (z-score)",
+"lesson": "1.7",
+"unit": 1,
+"unitTitle": "Analyzing Data",
+"definition": "For an individual value in a distribution of quantitative data, the standardized score (z-score) tells us how many standard deviations from the mean the value falls, and in which direction. (p. 72)"
+},
+{
+"id": "convenience-sample",
+"term": "convenience sample",
+"lesson": "2.1",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "A sample that consists of members of the population that are easy to reach. Convenience sampling leads to bias when the members of the sample differ from the population in ways that affect their responses. (p. 140)"
+},
+{
+"id": "voluntary-response-sample",
+"term": "voluntary response sample",
+"lesson": "2.1",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "A sample that consists of people who choose themselves for the sample by responding to a general appeal (sometimes called a self-selected sample). Voluntary response sampling leads to bias when the members of the sample differ from the population in ways that affect their responses. (p. 141)"
+},
+{
+"id": "simple-random-sample",
+"term": "simple random sample",
+"lesson": "2.1",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "SRS. Sample chosen in such a way that every group of n items or individuals in the population has an equal chance to be selected as the sample. (p. 131)"
+},
+{
+"id": "bias",
+"term": "bias",
+"lesson": "2.1",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "The design of a statistical study shows bias if the resulting sample statistic is very likely to underestimate or very likely to overestimate the population parameter because of a flaw in the data collection process. (p. 141)"
+},
+{
+"id": "stratified-random-sample",
+"term": "stratified random sample",
+"lesson": "2.2",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "A sample selected by dividing the population into non-overlapping groups (strata) of items or individuals that share characteristics thought to be associated with the variables being measured in a study, selecting an SRS from each stratum, and combining the SRSs into an overall sample. (p. 134)"
+},
+{
+"id": "strata",
+"term": "strata",
+"lesson": "2.2",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Groups of items or individuals in a population that share characteristics thought to be associated with the variables being measured in a study. The singular form is stratum. (p. 134)"
+},
+{
+"id": "cluster-random-sample",
+"term": "cluster random sample",
+"lesson": "2.3",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "A sample selected by choosing an SRS of clusters and including every individual in each of the selected clusters in the sample. (p. 137)"
+},
+{
+"id": "systematic-random-sample",
+"term": "systematic random sample",
+"lesson": "2.3",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "A sample selected by choosing individuals from an ordered arrangement of the population, by randomly selecting one of the first k items or individuals and then choosing every kth item or individual after that. (p. 138)"
+},
+{
+"id": "homogeneous",
+"term": "homogeneous",
+"lesson": "2.3",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "When the items or individuals in a group are quite similar with respect to the variable of interest. Ideally, the items or individuals in a stratum are homogeneous. (p. 134)"
+},
+{
+"id": "heterogeneous",
+"term": "heterogeneous",
+"lesson": "2.3",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "When the items or individuals in a group differ considerably with respect to the variable of interest. Ideally, the items or individuals in a cluster are heterogeneous, and each cluster mirrors the variability in the population. (p. 137)"
+},
+{
+"id": "undercoverage",
+"term": "undercoverage",
+"lesson": "2.4",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Occurs when some members of the population are less likely to be chosen or cannot be chosen for a sample. Undercoverage bias occurs when the underrepresented items or individuals differ from the population in ways that affect their responses. (p. 142)"
+},
+{
+"id": "nonresponse",
+"term": "nonresponse",
+"lesson": "2.4",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Occurs when an individual chosen for the sample can't be contacted or refuses to participate. Nonresponse bias occurs when the individuals who can't be contacted or who refuse to participate differ from the population in ways that affect their responses. (p. 143)"
+},
+{
+"id": "response-bias",
+"term": "response bias",
+"lesson": "2.4",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Occurs when responses to a survey question consistently differ from the truth in some way. Includes bias due to question wording. (p. 144)"
+},
+{
+"id": "confounding-variable",
+"term": "confounding variable",
+"lesson": "2.5",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "An extraneous variable that is associated with both the explanatory variable and the response variable in a statistical study. The presence of a confounding variable makes it difficult to determine whether changes in the explanatory variable cause changes in the response variable. (p. 121)"
+},
+{
+"id": "observational-study",
+"term": "observational study",
+"lesson": "2.5",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "A study that observes items or individuals and measures the variables of interest, but does not impose treatments. (p. 119)"
+},
+{
+"id": "experiment",
+"term": "experiment",
+"lesson": "2.5",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "A study in which researchers deliberately impose treatments on experimental units to measure their responses. (p. 117)"
+},
+{
+"id": "experimental-units",
+"term": "experimental units",
+"lesson": "2.5",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "The item or individual to which a treatment is assigned. When the experimental units are human beings, they are often called subjects. (p. 118)"
+},
+{
+"id": "treatments",
+"term": "treatments",
+"lesson": "2.5",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "The specific condition applied to the items or individuals in an experiment. If an experiment has several factors, a treatment is a combination of specific levels of these factors. (p. 118)"
+},
+{
+"id": "factor",
+"term": "factor",
+"lesson": "2.5",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Explanatory variable in an experiment that is manipulated and may cause a change in the response variable. (p. 117)"
+},
+{
+"id": "extraneous-variable",
+"term": "extraneous variable",
+"lesson": "2.5",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "In a statistical study, a variable other than the explanatory variable that may have an effect on the response variable. (p. 120)"
+},
+{
+"id": "welldesigned-experiment",
+"term": "well-designed experiment",
+"lesson": "2.6",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "An experiment that uses comparison, random assignment, and replication to produce convincing evidence of cause and effect."
+},
+{
+"id": "comparison",
+"term": "comparison",
+"lesson": "2.6",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Experimental design principle: use a design that compares two or more treatments. Some experiments include a control group to establish a baseline for measuring the effects of other treatments. (p. 160)"
+},
+{
+"id": "random-assignment",
+"term": "random assignment",
+"lesson": "2.6",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Experimental design principle: use of a chance process to assign experimental units to treatments. Doing so helps create roughly equivalent groups of experimental units by balancing the effects of extraneous variables among the treatment groups, allowing for cause-and-effect conclusions. (p. 156)"
+},
+{
+"id": "replication",
+"term": "replication",
+"lesson": "2.6",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Experimental design principle: give each treatment to multiple experimental units. Using many experimental units in each treatment group helps us determine whether one treatment is more effective than another. (p. 158)"
+},
+{
+"id": "control",
+"term": "control",
+"lesson": "2.6",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Direct control: an experimental design principle of keeping the values of some extraneous variables the same for all experimental units, to avoid confounding and reduce variability in the response variable. (p. 158)"
+},
+{
+"id": "placebo-effect",
+"term": "placebo effect",
+"lesson": "2.6",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Describes the fact that some subjects in an experiment will respond favorably to any treatment, even an inactive treatment (placebo). (p. 154)"
+},
+{
+"id": "singleblind",
+"term": "single-blind",
+"lesson": "2.6",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "An experiment in which either the subjects or the people who interact with them and measure the response variable (but not both) don't know which treatment a subject is receiving. Also called single-masked. (p. 154)"
+},
+{
+"id": "doubleblind",
+"term": "double-blind",
+"lesson": "2.6",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "An experiment in which neither the subjects nor those who interact with them and measure the response variable know which treatment a subject is receiving. Also called double-masked. (p. 154)"
+},
+{
+"id": "control-group",
+"term": "control group",
+"lesson": "2.6",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Group in an experiment that is used to provide a baseline for comparing the effects of other treatments. Depending on the purpose of the experiment, a control group may be given an inactive treatment, an active treatment, or no treatment at all. (p. 153)"
+},
+{
+"id": "completely-randomized-design",
+"term": "completely randomized design",
+"lesson": "2.7",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Design in which the experimental units are assigned to the treatments completely at random. (p. 156)"
+},
+{
+"id": "randomized-block-design",
+"term": "randomized block design",
+"lesson": "2.7",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "An experimental design in which experimental units are first sorted into blocks of similar individuals, with random assignment to treatments occurring separately within each block. (p. 161)"
+},
+{
+"id": "block",
+"term": "block",
+"lesson": "2.7",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Group of experimental units that are known before the experiment to be similar in some way that is expected to affect the response to the treatments. (p. 161)"
+},
+{
+"id": "matchedpairs-design",
+"term": "matched-pairs design",
+"lesson": "2.7",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "Common experimental design for comparing two treatments that uses blocks of size 2. In some matched-pairs designs, each experimental unit receives both treatments in a random order. In others, two very similar experimental units are paired and the two treatments are randomly assigned within each pair. (p. 164)"
+},
+{
+"id": "statistically-significant",
+"term": "statistically significant",
+"lesson": "2.8",
+"unit": 2,
+"unitTitle": "Collecting Data",
+"definition": "(1) In an experiment, when the difference in responses between the groups is so large that it is unlikely to be explained by the chance variation in the random assignment, the results are called statistically significant. (2) If the P-value is less than or equal to α, the results of a statistical study are statistically significant at level α — we reject H0 and conclude there is convincing evidence for Ha. (pp. 166, 424)"
+},
+{
+"id": "probability",
+"term": "probability",
+"lesson": "3.1",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "A number between 0 and 1 that describes the proportion of times an outcome of a random process would occur in a very long series of trials. (p. 210)"
+},
+{
+"id": "longrun-relative-frequency",
+"term": "long-run relative frequency",
+"lesson": "3.1",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "The proportion of times an outcome occurs over a very large number of repetitions of a random process — this is what probability describes."
+},
+{
+"id": "sampling-variability",
+"term": "sampling variability",
+"lesson": "3.1",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "The fact that different random samples from the same population produce different values for a statistic. (p. 344)"
+},
+{
+"id": "random-process",
+"term": "random process",
+"lesson": "3.1",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "A process that generates results that are determined purely by chance. (p. 210)"
+},
+{
+"id": "outcome",
+"term": "outcome",
+"lesson": "3.1",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "The result of one trial of a random process. (p. 210)"
+},
+{
+"id": "event",
+"term": "event",
+"lesson": "3.1",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "A subset of all the possible outcomes from the sample space of a random process. Events are usually designated by capital letters, like A, B, C, and so on. (p. 210)"
+},
+{
+"id": "simulation",
+"term": "simulation",
+"lesson": "3.2",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "Imitation of random behavior in such a way that simulated outcomes are consistent with real-world outcomes. (p. 212)"
+},
+{
+"id": "sample-space",
+"term": "sample space",
+"lesson": "3.3",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "List of all possible outcomes of a random process. (p. 223)"
+},
+{
+"id": "complement",
+"term": "complement",
+"lesson": "3.3",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "The complement of event A, written as Aᶜ, is the event that A does not occur. (p. 225)"
+},
+{
+"id": "venn-diagram",
+"term": "Venn diagram",
+"lesson": "3.4",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "A figure that consists of one or more circles surrounded by a rectangle. The region inside the rectangle represents the sample space of the random process, and each circle represents an event. (p. 231)"
+},
+{
+"id": "mutually-exclusive",
+"term": "mutually exclusive",
+"lesson": "3.4",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "Also called disjoint. Two events A and B that have no outcomes in common and so can never occur together. That is, P(A and B) = 0. (p. 226)"
+},
+{
+"id": "disjoint",
+"term": "disjoint",
+"lesson": "3.4",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "Another term for mutually exclusive — two events that have no outcomes in common. (p. 226)"
+},
+{
+"id": "conditional-probability",
+"term": "conditional probability",
+"lesson": "3.5",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "Probability that one event happens given that another event is already known to have happened. The conditional probability that event A happens given that event B has happened is denoted P(A | B), found by P(A | B) = P(A and B) / P(B). (p. 239)"
+},
+{
+"id": "independent",
+"term": "independent",
+"lesson": "3.5",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "Two events are independent if knowing whether or not one event has happened does not change the probability that the other event will happen. (p. 242)"
+},
+{
+"id": "tree-diagram",
+"term": "tree diagram",
+"lesson": "3.6",
+"unit": 3,
+"unitTitle": "Probability",
+"definition": "A diagram that shows the sample space of a random process involving multiple stages. The probability of each outcome is shown on the corresponding branch of the tree. All probabilities after the first stage are conditional probabilities. (p. 246)"
+},
+{
+"id": "random-variable",
+"term": "random variable",
+"lesson": "4.1",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "Variable that takes numerical values that describe the outcomes of a random process. (p. 272)"
+},
+{
+"id": "discrete-random-variable",
+"term": "discrete random variable",
+"lesson": "4.1",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "A random variable that takes a countable set of possible values with gaps between them on a number line. The probability of any event involving a discrete random variable is the sum of the probabilities for the values that make up the event. (p. 272)"
+},
+{
+"id": "probability-distribution",
+"term": "probability distribution",
+"lesson": "4.1",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "Gives the possible values of a random variable and their probabilities. (p. 272)"
+},
+{
+"id": "expected-value",
+"term": "expected value",
+"lesson": "4.1",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "The mean of a random variable's probability distribution — describes the random variable's average value over many, many trials of the same random process. Found by multiplying each possible value of X by its probability, then adding all the products: μX = E(X) = x1P(x1) + x2P(x2) + ... (p. 277)"
+},
+{
+"id": "continuous-random-variable",
+"term": "continuous random variable",
+"lesson": "4.2",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "A random variable that can take any value in a specified interval on the number line. (p. 309)"
+},
+{
+"id": "density-curve",
+"term": "density curve",
+"lesson": "4.3",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "The probability distribution of a continuous random variable is a curve that (a) is always on or above the horizontal axis and (b) has area exactly 1 underneath it. The area under the curve above any interval gives the probability the random variable falls within that interval. (p. 310)"
+},
+{
+"id": "normal-distribution",
+"term": "normal distribution",
+"lesson": "4.3",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "Distribution described by a normal curve, completely specified by its mean μ and standard deviation σ. The mean is located at the balance point of the symmetric distribution and is the same as the median. (p. 312)"
+},
+{
+"id": "empirical-rule",
+"term": "empirical rule",
+"lesson": "4.3",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "Also called the 68-95-99.7 rule. In a normal distribution with mean μ and standard deviation σ: about 68% of values fall within 1 standard deviation of μ, about 95% within 2 standard deviations, and about 99.7% within 3 standard deviations."
+},
+{
+"id": "standard-normal-distribution",
+"term": "standard normal distribution",
+"lesson": "4.4",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "Normal distribution with mean 0 and standard deviation 1. (p. 321)"
+},
+{
+"id": "variance",
+"term": "variance",
+"lesson": "4.5",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "The square of the standard deviation. In symbols, the sample variance is given by s². (p. 57)"
+},
+{
+"id": "binomial-random-variable",
+"term": "binomial random variable",
+"lesson": "4.6",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "The count of successes in a binomial setting. The possible values of a binomial random variable are 0, 1, 2, ..., n. (p. 289)"
+},
+{
+"id": "binomial-distribution",
+"term": "binomial distribution",
+"lesson": "4.6",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "In a binomial setting, let X = the number of successes. The probability distribution of X is a binomial distribution, completely specified by two numbers: the number of trials n and the probability of success p on each trial. (p. 289)"
+},
+{
+"id": "combination",
+"term": "combination",
+"lesson": "4.6",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "Related to the binomial coefficient: the number of ways to arrange x successes among n trials, given by n! / (x!(n−x)!), for x = 0, 1, 2, ..., n. (p. 292)"
+},
+{
+"id": "cumulative-probability-distribution",
+"term": "cumulative probability distribution",
+"lesson": "4.7",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "Gives P(X ≤ x), the percentile corresponding to each possible value of the random variable X. (p. 296)"
+},
+{
+"id": "10-condition",
+"term": "10% condition",
+"lesson": "4.8",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "When selecting a random sample of size n without replacement from a population of size N, we can treat individual observations as independent when performing calculations as long as n ≤ 10% of N. (p. 302)"
+},
+{
+"id": "large-counts-condition",
+"term": "large counts condition",
+"lesson": "4.8",
+"unit": 4,
+"unitTitle": "Random Variables",
+"definition": "A condition for using a normal distribution to approximate a binomial distribution, or to perform calculations/inference involving one or more sample proportions: check that the relevant counts (such as np and n(1−p), or the pooled-proportion versions for two samples) are all at least 10. (pp. 375, 385, 416, 464, 471, 487)"
+},
+{
+"id": "statistic",
+"term": "statistic",
+"lesson": "5.1",
+"unit": 5,
+"unitTitle": "Sampling Distributions",
+"definition": "A number that describes some characteristic of a sample. (p. 5)"
+},
+{
+"id": "parameter",
+"term": "parameter",
+"lesson": "5.1",
+"unit": 5,
+"unitTitle": "Sampling Distributions",
+"definition": "A number that describes some characteristic of a population. (p. 5)"
+},
+{
+"id": "sampling-distribution",
+"term": "sampling distribution",
+"lesson": "5.1",
+"unit": 5,
+"unitTitle": "Sampling Distributions",
+"definition": "The distribution of values taken by a statistic in all possible samples of the same size from the same population. (p. 344)"
+},
+{
+"id": "unbiased-estimator",
+"term": "unbiased estimator",
+"lesson": "5.2",
+"unit": 5,
+"unitTitle": "Sampling Distributions",
+"definition": "A statistic used to estimate a parameter is unbiased if the mean of its sampling distribution is equal to the value of the parameter being estimated. (p. 350)"
+},
+{
+"id": "sampling-distribution-of-a-sample-proportion",
+"term": "sampling distribution of a sample proportion",
+"lesson": "5.3",
+"unit": 5,
+"unitTitle": "Sampling Distributions",
+"definition": "The distribution of values taken by the sample proportion p̂ in all possible samples of the same size from the same population. (p. 371)"
+},
+{
+"id": "sampling-distribution-of-a-difference-in-sample-proportions",
+"term": "sampling distribution of a difference in sample proportions",
+"lesson": "5.4",
+"unit": 5,
+"unitTitle": "Sampling Distributions",
+"definition": "The distribution of values taken by the difference in sample proportions p̂₁ − p̂₂ in all possible samples of size n₁ from Population 1 and all possible samples of size n₂ from Population 2. (p. 460)"
+},
+{
+"id": "sampling-distribution-of-a-sample-mean",
+"term": "sampling distribution of a sample mean",
+"lesson": "5.5",
+"unit": 5,
+"unitTitle": "Sampling Distributions",
+"definition": "The distribution of values taken by the sample mean x̄ in all possible samples of the same size from the same population. (p. 545)"
+},
+{
+"id": "central-limit-theorem",
+"term": "central limit theorem",
+"lesson": "5.6",
+"unit": 5,
+"unitTitle": "Sampling Distributions",
+"definition": "In an SRS of size n from any population with mean μ and standard deviation σ, when n is sufficiently large, the sampling distribution of the sample mean x̄ is approximately normal. (p. 550)"
+},
+{
+"id": "sampling-distribution-of-a-difference-in-sample-means",
+"term": "sampling distribution of a difference in sample means",
+"lesson": "5.7",
+"unit": 5,
+"unitTitle": "Sampling Distributions",
+"definition": "The distribution of values taken by the difference in sample means x̄₁ − x̄₂ in all possible samples of size n₁ from Population 1 and all possible samples of size n₂ from Population 2. (p. 620)"
+},
+{
+"id": "point-estimate",
+"term": "point estimate",
+"lesson": "6.1",
+"unit": 6,
+"unitTitle": "Confidence Intervals for Proportions",
+"definition": "The value of a point estimator (a statistic) calculated from sample data, used to estimate a population parameter. (p. 341)"
+},
+{
+"id": "margin-of-error",
+"term": "margin of error",
+"lesson": "6.1",
+"unit": 6,
+"unitTitle": "Confidence Intervals for Proportions",
+"definition": "Describes how far, at most, we expect the point estimate to vary from the population parameter with C% confidence. The difference between the point estimate and the parameter will be less than the margin of error in C% of all samples, where C is the confidence level. (p. 387)"
+},
+{
+"id": "confidence-interval",
+"term": "confidence interval",
+"lesson": "6.1",
+"unit": 6,
+"unitTitle": "Confidence Intervals for Proportions",
+"definition": "Gives a set of plausible values for a parameter, calculated from sample data. Also called an interval estimate. Confidence intervals have the form point estimate ± margin of error, or statistic ± (critical value)(standard error of the statistic). (p. 384)"
+},
+{
+"id": "confidence-level",
+"term": "confidence level",
+"lesson": "6.2",
+"unit": 6,
+"unitTitle": "Confidence Intervals for Proportions",
+"definition": "C. Gives the approximate percentage of confidence intervals that capture the population parameter in repeated random samples with the same sample size. (p. 396)"
+},
+{
+"id": "random-condition",
+"term": "random condition",
+"lesson": "6.3",
+"unit": 6,
+"unitTitle": "Confidence Intervals for Proportions",
+"definition": "A condition for computing probabilities involving a sample proportion (or difference in sample proportions) and for performing inference: the data must come from a random sample from the population of interest or from a randomized experiment. When comparing populations or treatments, the data must come from independent random samples or groups. (pp. 385, 416, 464, 471, 487)"
+},
+{
+"id": "standard-error-of-phat",
+"term": "standard error of p-hat",
+"lesson": "6.3",
+"unit": 6,
+"unitTitle": "Confidence Intervals for Proportions",
+"definition": "An estimate of the standard deviation of the sampling distribution of p̂: SE(p̂) = √(p̂(1−p̂)/n). Describes how much the sample proportion p̂ typically varies from the population proportion p in repeated random samples of size n. (p. 388)"
+},
+{
+"id": "critical-value",
+"term": "critical value",
+"lesson": "6.3",
+"unit": 6,
+"unitTitle": "Confidence Intervals for Proportions",
+"definition": "Multiplier that makes an interval wide enough to have the stated confidence level C. The critical value depends on both the confidence level C and the sampling distribution of the statistic. (p. 387)"
+},
+{
+"id": "onesample-zinterval-for-a-population-proportion",
+"term": "one-sample z-interval for a population proportion",
+"lesson": "6.4",
+"unit": 6,
+"unitTitle": "Confidence Intervals for Proportions",
+"definition": "Confidence interval used to estimate a population proportion p. (p. 393)"
+},
+{
+"id": "twosample-zinterval-for-a-difference-in-population-proportions",
+"term": "two-sample z-interval for a difference in population proportions",
+"lesson": "6.5",
+"unit": 6,
+"unitTitle": "Confidence Intervals for Proportions",
+"definition": "Confidence interval used to estimate a difference in the proportions of successes for two populations."
+},
+{
+"id": "hypothesis-test",
+"term": "hypothesis test",
+"lesson": "7.1",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "Formal procedure for using observed data to decide between two competing claims (the null hypothesis and the alternative hypothesis). Also called a test of significance, a significance test, or a test of hypotheses. (p. 412)"
+},
+{
+"id": "null-hypothesis",
+"term": "null hypothesis",
+"lesson": "7.1",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "H0. Claim we seek evidence against in a hypothesis test — usually a statement of \"no effect\" or \"no difference.\" (p. 414)"
+},
+{
+"id": "alternative-hypothesis",
+"term": "alternative hypothesis",
+"lesson": "7.1",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "Ha. The claim that we are trying to find evidence for in a hypothesis test. (p. 414)"
+},
+{
+"id": "pvalue",
+"term": "p-value",
+"lesson": "7.1",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "The probability of getting evidence for the alternative hypothesis Ha as strong as or stronger than the observed evidence, when the null hypothesis is true. The smaller the P-value, the stronger the evidence against H0 and in favor of Ha."
+},
+{
+"id": "significance-level",
+"term": "significance level",
+"lesson": "7.1",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "α. Value used as a boundary to decide whether an observed result is unlikely to happen by chance alone when the null hypothesis is true. The significance level gives the probability of a Type I error. (p. 424)"
+},
+{
+"id": "formal-decision",
+"term": "formal decision",
+"lesson": "7.1",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "The decision to reject H0 (if the observed result is too unlikely to occur by chance alone when H0 is true) or to fail to reject H0 (if it is not), based on comparing the P-value to the significance level. (p. 423)"
+},
+{
+"id": "conclusion",
+"term": "conclusion",
+"lesson": "7.1",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "A statement, written in context, that explains what the formal decision of a hypothesis test means about the original claim."
+},
+{
+"id": "onesided-alternative-hypothesis",
+"term": "one-sided alternative hypothesis",
+"lesson": "7.1",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "An alternative hypothesis is one-sided if it states that a parameter is greater than the null value, or that it is less than the null value. Also called one-sided or one-tailed tests. (p. 414)"
+},
+{
+"id": "twosided-alternative-hypothesis",
+"term": "two-sided alternative hypothesis",
+"lesson": "7.1",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "An alternative hypothesis is two-sided if it states that a parameter is different from the null value (could be greater than or less than). Also called two-sided or two-tailed tests. (p. 414)"
+},
+{
+"id": "test-statistic",
+"term": "test statistic",
+"lesson": "7.2",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "Also called standardized test statistic. Measures how far a statistic is from what we would expect if H0 were true, in standard deviation units: standardized test statistic = (statistic − parameter) / standard deviation (or standard error) of the statistic. (p. 419)"
+},
+{
+"id": "onesample-ztest-for-a-population-proportion",
+"term": "one-sample z-test for a population proportion",
+"lesson": "7.3",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "A test of the null hypothesis that a population proportion p is equal to a specified value. (p. 427)"
+},
+{
+"id": "randomization-distribution",
+"term": "randomization distribution",
+"lesson": "7.4",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "Distribution of a statistic generated by repeatedly reassigning the response values in an experiment to treatment groups, assuming the specific treatment received doesn't affect the response values. (p. 167)"
+},
+{
+"id": "twosample-ztest-for-a-difference-in-population-proportions",
+"term": "two-sample z-test for a difference in population proportions",
+"lesson": "7.5",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "A test of the null hypothesis that the difference in the proportions of successes for two populations or treatments is equal to a specified value (usually 0). (p. 492)"
+},
+{
+"id": "combined-pooled-proportion",
+"term": "combined (pooled) proportion",
+"lesson": "7.5",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "The overall proportion of successes in two samples combined: p̂C = (X₁+X₂)/(n₁+n₂). Used to check the Large Counts condition and calculate the standard error in the two-sample z-test for a difference in proportions. (p. 456)"
+},
+{
+"id": "type-i-error",
+"term": "Type I error",
+"lesson": "7.6",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "An error that occurs if we reject H0 when H0 is true — the data give convincing evidence that Ha is true when it really isn't. (p. 438)"
+},
+{
+"id": "type-ii-error",
+"term": "Type II error",
+"lesson": "7.6",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "An error that occurs if we fail to reject H0 when Ha is true — the data do not give convincing evidence that Ha is true when it really is. (p. 438)"
+},
+{
+"id": "power-of-a-hypothesis-test",
+"term": "power of a hypothesis test",
+"lesson": "7.7",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "The probability that a test will find convincing evidence for Ha when a specific alternative value of the parameter is true. The power of a test against any alternative is 1 minus the probability of a Type II error for that alternative. (p. 440)"
+},
+{
+"id": "chisquare-distribution",
+"term": "chi-square distribution",
+"lesson": "7.8",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "A distribution described by a density curve that takes only non-negative values and is skewed to the right. A particular chi-square distribution is specified by its degrees of freedom. (p. 511)"
+},
+{
+"id": "expected-counts",
+"term": "expected counts",
+"lesson": "7.8",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "Numbers of items or individuals in the sample(s) that would fall in each cell of the two-way table if H0 were true in a chi-square test for independence or homogeneity. (p. 505)"
+},
+{
+"id": "degrees-of-freedom",
+"term": "degrees of freedom",
+"lesson": "7.8",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "A value, based on the number of categories or the dimensions of a table, that determines which chi-square (or t) distribution to use."
+},
+{
+"id": "chisquare-test-for-homogeneity",
+"term": "chi-square test for homogeneity",
+"lesson": "7.8",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "A test of the null hypothesis that there is no difference in the distribution of a categorical variable in the populations of interest. (p. 516)"
+},
+{
+"id": "chisquare-test-statistic",
+"term": "chi-square test statistic",
+"lesson": "7.8",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "Measure of how different the observed counts are from the expected counts, relative to the expected counts: χ² = Σ (observed count − expected count)² / expected count, summed over all cells. (p. 509)"
+},
+{
+"id": "followup-analysis",
+"term": "follow-up analysis",
+"lesson": "7.9",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "Examining the individual contributions to the chi-square statistic — contribution = (observed count − expected count)² / expected count — to determine which categories contributed most to a significant result. (p. 518)"
+},
+{
+"id": "chisquare-test-for-independence",
+"term": "chi-square test for independence",
+"lesson": "7.10",
+"unit": 7,
+"unitTitle": "Hypothesis Tests for Proportions",
+"definition": "A test of the null hypothesis that there is no association between two categorical variables in the population of interest. (p. 516)"
+},
+{
+"id": "tdistribution",
+"term": "t-distribution",
+"lesson": "8.1",
+"unit": 8,
+"unitTitle": "Confidence Intervals for Means",
+"definition": "A distribution described by a symmetric, single-peaked, bell-shaped density curve, completely specified by its degrees of freedom. It has more area in its tails than the standard normal distribution. (p. 562)"
+},
+{
+"id": "onesample-tinterval-for-a-population-mean",
+"term": "one-sample t-interval for a population mean",
+"lesson": "8.3",
+"unit": 8,
+"unitTitle": "Confidence Intervals for Means",
+"definition": "Confidence interval used to estimate a population mean μ when the population standard deviation σ is unknown. (p. 571)"
+},
+{
+"id": "twosample-tinterval-for-a-difference-in-population-means",
+"term": "two-sample t-interval for a difference in population means",
+"lesson": "8.4",
+"unit": 8,
+"unitTitle": "Confidence Intervals for Means",
+"definition": "Confidence interval used to estimate a difference in the means of two populations with unknown standard deviations. (p. 638)"
+},
+{
+"id": "onesample-tinterval-for-a-population-mean-difference",
+"term": "one-sample t-interval for a population mean difference",
+"lesson": "8.5",
+"unit": 8,
+"unitTitle": "Confidence Intervals for Means",
+"definition": "Also called a paired t-interval for a population mean difference. Confidence interval used with paired data to estimate a population mean difference."
+},
+{
+"id": "onesample-ttest-for-a-population-mean",
+"term": "one-sample t-test for a population mean",
+"lesson": "9.2",
+"unit": 9,
+"unitTitle": "Hypothesis Tests for Means",
+"definition": "A test of the null hypothesis that a population mean μ is equal to a specified value, when the population standard deviation σ is unknown. (p. 594)"
+},
+{
+"id": "twosample-ttest-for-a-difference-in-population-means",
+"term": "two-sample t-test for a difference in population means",
+"lesson": "9.4",
+"unit": 9,
+"unitTitle": "Hypothesis Tests for Means",
+"definition": "A test of the null hypothesis that the difference in the means of two populations with unknown standard deviations is equal to a specified value (usually 0). (p. 655)"
+},
+{
+"id": "onesample-ttest-for-a-population-mean-difference",
+"term": "one-sample t-test for a population mean difference",
+"lesson": "9.5",
+"unit": 9,
+"unitTitle": "Hypothesis Tests for Means",
+"definition": "Also called a paired t-test for a mean difference. A test of the null hypothesis that a population mean difference is equal to a specified value, usually 0. (p. 597)"
+},
+{
+"id": "bivariate-quantitative-data-set",
+"term": "bivariate quantitative data set",
+"lesson": "10.1",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "A data set that describes the relationship between two variables. (p. 683)"
+},
+{
+"id": "scatterplot",
+"term": "scatterplot",
+"lesson": "10.1",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "Graph that shows the relationship between two quantitative variables for the same observational units. The values of one variable appear on the horizontal axis, the values of the other on the vertical axis, and each observational unit appears as a point. (p. 683)"
+},
+{
+"id": "form",
+"term": "form",
+"lesson": "10.1",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "The overall pattern of a scatterplot — for example, linear or curved."
+},
+{
+"id": "direction",
+"term": "direction",
+"lesson": "10.1",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "Describes whether a relationship between two quantitative variables is positive (values of one variable tend to increase as values of the other increase) or negative (values of one variable tend to decrease as the other increases). (p. 687)"
+},
+{
+"id": "strength",
+"term": "strength",
+"lesson": "10.1",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "How closely the points in a scatterplot follow a clear form, ranging from weak to strong."
+},
+{
+"id": "unusual-features",
+"term": "unusual features",
+"lesson": "10.1",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "Deviations from the overall pattern of a scatterplot, such as outliers or clusters."
+},
+{
+"id": "correlation-coefficient",
+"term": "correlation coefficient",
+"lesson": "10.2",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "Also called correlation. r. A number without units, between −1 and 1, that measures the strength (and direction) of the linear association between two quantitative variables. (p. 689)"
+},
+{
+"id": "linear-regression-model",
+"term": "linear regression model",
+"lesson": "10.3",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "Also called a simple linear regression model, or regression line. Line that models how a response variable y changes as an explanatory variable x changes, expressed in the form ŷ = a + bx, where ŷ is the predicted value of y for a given value of x. (p. 704)"
+},
+{
+"id": "extrapolation",
+"term": "extrapolation",
+"lesson": "10.3",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "Use of a regression model for prediction outside the interval of x-values used to obtain the model. The further we extrapolate, the less reliable the predictions become. (p. 706)"
+},
+{
+"id": "interpolation",
+"term": "interpolation",
+"lesson": "10.3",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "Use of a regression line for prediction within the interval of x-values used to obtain the line. (p. 706)"
+},
+{
+"id": "residual",
+"term": "residual",
+"lesson": "10.3",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "Difference between an actual value of y and the value of y predicted by the regression line: residual = actual y − predicted y = y − ŷ. (p. 707)"
+},
+{
+"id": "slope",
+"term": "slope",
+"lesson": "10.3",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "In the regression equation ŷ = a + bx, the slope b is the amount by which the predicted value of y changes for each one-unit increase in x. (p. 709)"
+},
+{
+"id": "yintercept",
+"term": "y-intercept",
+"lesson": "10.3",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "In the regression equation ŷ = a + bx, the y-intercept a is the predicted value of y when x = 0. (p. 709)"
+},
+{
+"id": "leastsquares-regression-line",
+"term": "least-squares regression line",
+"lesson": "10.4",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "The regression line that makes the sum of the squared residuals as small as possible. (p. 711)"
+},
+{
+"id": "residual-plot",
+"term": "residual plot",
+"lesson": "10.4",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "A scatterplot that displays the residuals on the vertical axis and the explanatory variable (or predicted y-values) on the horizontal axis. Residual plots help us assess whether a linear model is appropriate. (p. 716)"
+},
+{
+"id": "coefficient-of-determination",
+"term": "coefficient of determination",
+"lesson": "10.5",
+"unit": 10,
+"unitTitle": "Two-Variable Data",
+"definition": "r². A measure of the proportion (or percentage) of the variation in the response variable that is explained by the explanatory variable in the linear model. (p. 721)"
+}
+];
