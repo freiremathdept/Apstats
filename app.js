@@ -349,10 +349,35 @@ function buildInterpBrowse(){
   const el = document.getElementById("interpBrowse");
   if (!el) return; // this page has no Interpretation Practice section
   const items = window.INTERP_DATA || [];
-  el.innerHTML = items.map(interpCardHTML).join("");
+  if (!items.length) return;
+  // Grouped into a click-to-expand accordion by category (Standard Deviation, z-score, etc.) —
+  // same <details class="unit-group"> pattern as Practice Problems' "Browse every unit" —
+  // instead of dumping all 60 cards in one long flat list.
+  const cats = {};
+  const order = [];
+  items.forEach(it=>{
+    if (!cats[it.category]){ cats[it.category] = []; order.push(it.category); }
+    cats[it.category].push(it);
+  });
+  el.innerHTML = order.map(cat=>{
+    const group = cats[cat];
+    const cards = group.map(interpCardHTML).join("");
+    return `<details class="unit-group">
+      <summary><span class="u-chev">▸</span> ${cat.replace(/</g,"&lt;")} <span class="vocab-count">${group.length} problems</span></summary>
+      <div class="unit-list">${cards}</div>
+    </details>`;
+  }).join("");
   attachCardHandlers(el);
 }
 buildInterpBrowse();
+
+const interpExpandAllBtn = document.getElementById("interpExpandAll");
+if (interpExpandAllBtn) interpExpandAllBtn.addEventListener("click", (e)=>{
+  const details = document.getElementById("interpBrowse").querySelectorAll("details");
+  const anyClosed = Array.from(details).some(d=>!d.open);
+  details.forEach(d=> d.open = anyClosed);
+  e.target.textContent = anyClosed ? "Collapse all" : "Expand all";
+});
 
 // ---------- vocabulary flashcards ----------
 // Same shell/self-check/logging pipeline as everything else (see problemHTML + attachCardHandlers),
