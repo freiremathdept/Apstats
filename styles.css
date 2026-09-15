@@ -473,6 +473,11 @@
 
 /* ---------- describing distributions (reuses .problem for the card shell) ---------- */
 .problem.dist-card .ic-title{margin-top:2px;}
+.problem.dist-card textarea{
+  width:100%; min-height:64px; margin-top:10px; border:1.5px solid var(--line); border-radius:9px; padding:10px 12px;
+  font:inherit; font-size:.93rem; color:var(--ink); background:var(--bg-subtle); resize:vertical;
+}
+.problem.dist-card textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-tint); background:var(--surface);}
 .dist-graphic{margin:14px 0; border:1px solid var(--line); border-radius:10px; background:var(--bg-subtle); padding:4px;}
 .dist-canvas{display:block; width:100%;}
 .dist-canvas.single{height:170px;}
